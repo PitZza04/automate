@@ -7,11 +7,8 @@ function Login() {
     const navigation = useNavigation();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [passwordShown, setPasswordShown] = React.useState(false);
-    const togglePassword = () => {
-        setPasswordShown(!passwordShown);
-      };
-
+    const [passwordShown, setPasswordShown] = React.useState(true);
+    
     return (
     <ScrollView>
         
@@ -31,8 +28,9 @@ function Login() {
             
             <View style={styles.loginForm}>
                 
-                <TextInput
-                    style={{ 
+                <View style={styles.userInput}>
+                    <TextInput
+                        style={{ 
                             padding: 5,
                             paddingStart: 20,
                             height: 50, 
@@ -40,14 +38,20 @@ function Login() {
                             borderColor: 'red',
                             borderWidth: 1,
                             borderRadius: 20
-                        }}
-                    onChangeText={setEmail}
-                    value={email}
-                    placeholder="Email or Mobile Number"
-                />
+                            }}
+                        returnKeyType="send"
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={setEmail}
+                        value={email}
+                        placeholder="Email or Mobile Number"
+                    />
+                </View>
 
-                <TextInput
-                    style={{ 
+                <View style={styles.passInput}>              
+                    <TextInput
+                        style={{ 
+                            alignSelf: 'stretch',
                             padding: 5,
                             paddingStart: 20,
                             height: 50, 
@@ -55,25 +59,38 @@ function Login() {
                             borderColor: 'red',
                             borderWidth: 1,
                             borderRadius: 20
-                        }}
-                    onChangeText={setPassword}
-                    value={password}
-                    placeholder="Password"
-                    secureTextEntry={true}
+                            }}
+                        returnKeyType="send"
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={setPassword}
+                        value={password}
+                        placeholder="Password"
+                        secureTextEntry={passwordShown}
+                    />
+                    <TouchableOpacity style={styles.eyecon} onPress={()=>{setPasswordShown((prev) => !prev)}}>
+                        <Image style={{
+                        resizeMode: "contain",
+                        height: 20,
+                        width: 20,
+                                }} 
+                        source={passwordShown ? require('../assets/details-icon/eye-show.png') : require('../assets/details-icon/eye-hide.png')}
                 />
+                    </TouchableOpacity>
+                </View> 
 
                 {/* <div className="login-password">
                         <input type={passwordShown ? "text" : "password"} placeholder="Password" required />
-                        <button className="show-pass" onClick={togglePassword}><img src={eyecon} /></button> 
-                        
-                        
+                        <button className="show-pass" onClick={togglePassword}><img src={eyecon} /></button>                         
                     </div> */}
 
-
-                <Text> Dont have an account? </Text>
-                <TouchableOpacity onPress={()=> navigation.navigate("Register")}>
-                    <Text style={styles.registerText}>Sign Up</Text>
-                </TouchableOpacity>
+                <View style={styles.forgotPass}>
+                    <TouchableOpacity onPress={()=> navigation.navigate("")}>
+                        <Text style={styles.forgotText}>Forgot Password</Text>
+                    </TouchableOpacity>
+                </View>
+            
+            
             </View>
         </SafeAreaView>
     </ScrollView>
@@ -115,10 +132,40 @@ const styles = StyleSheet.create({
     loginForm:{
         paddingTop: 30,
         width: '100%',
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:'white',
         borderRadius: 20
+    },
+
+    userInput:{
+        width: "100%",
+        alignItems: 'center'
+    },
+
+    passInput:{
+        paddingTop: 15,
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: "100%"
+    },
+
+    forgotPass:{
+        paddingTop: 15,
+    },
+
+    forgotText:{
+        color: 'red',
+        fontSize: 15,
+        fontWeight: '700'
+    },
+
+    eyecon:{
+        position: 'absolute',
+        paddingTop: 15,
+        right: 50
     }
 
 })
