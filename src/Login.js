@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput, Pressable, Alert, Dimensions } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,17 +8,18 @@ function Login() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [passwordShown, setPasswordShown] = React.useState(true);
-    
+
     return (
     <ScrollView>
-        
-        <SafeAreaView style={styles.container}>
+      
+        <View style={styles.container}>
             
             <View style={styles.mainlogo}>
+                
                 <Image style={{
                     resizeMode: "contain",
-                    height: 350,
-                    width: 350,
+                    height: 500,
+                    width: '90%',
                             }} 
                 source={require('../assets/main-icon/main-logo.png')} 
                 />
@@ -26,18 +27,31 @@ function Login() {
                 <Text style={styles.tagline}>Your Personalized Mechanic</Text>
             </View>
             
+            
             <View style={styles.loginForm}>
                 
                 <View style={styles.userInput}>
+
+                    <Image style={{
+                        padding: 10,
+                        margin: 5,
+                        height: 25,
+                        width: 25,
+                        resizeMode : 'stretch',
+                        alignItems: 'center'
+                                }} 
+                        source={require('../assets/details-icon/user-icon.png')}
+                    />
+
                     <TextInput
                         style={{ 
                             padding: 5,
-                            paddingStart: 40,
+                            paddingStart: 15,
                             height: 50, 
-                            width: "80%",
+                            width: "90%",
                             borderColor: 'red',
                             borderWidth: 1,
-                            borderRadius: 20
+                            borderRadius: 20,
                             }}
                         returnKeyType="send"
                         autoCorrect={false}
@@ -46,28 +60,31 @@ function Login() {
                         value={email}
                         placeholder="Email or Mobile Number"
                     />
-                     <View style={styles.userIcon}>
-                    <Image style={{
-                        resizeMode: "contain",
-                        height: 20,
-                        width: 20,
-                                }} 
-                        source={require('../assets/details-icon/user-icon.png')}
-                    />
-                    </View>
+                    
                 </View>
 
-                <View style={styles.passInput}>              
+                <View style={styles.passInput}>     
+
+                    <Image style={{
+                        padding: 10,
+                        margin: 5,
+                        height: 25,
+                        width: 25,
+                        resizeMode : 'stretch',
+                        alignItems: 'center'
+                                }} 
+                        source={require('../assets/details-icon/pass-icon.png')}
+                    />
+
                     <TextInput
                         style={{ 
-                            alignSelf: 'stretch',
                             padding: 5,
-                            paddingStart: 40,
+                            paddingStart: 15,
                             height: 50, 
-                            width: "80%",
+                            width: "90%",
                             borderColor: 'red',
                             borderWidth: 1,
-                            borderRadius: 20
+                            borderRadius: 20,
                             }}
                         returnKeyType="send"
                         autoCorrect={false}
@@ -76,23 +93,19 @@ function Login() {
                         value={password}
                         placeholder="Password"
                         secureTextEntry={passwordShown}
+                        underlineColorAndroid="transparent"
                     />
-
-                    <View style={styles.userPass}>
-                    <Image style={{
-                        resizeMode: "contain",
-                        height: 20,
-                        width: 20,
-                                }} 
-                        source={require('../assets/details-icon/pass-icon.png')}
-                    />
-                    </View>
 
                     <TouchableOpacity style={styles.eyecon} onPress={()=>{setPasswordShown((prev) => !prev)}}>
                         <Image style={{
-                        resizeMode: "contain",
-                        height: 20,
-                        width: 20,
+                        resizeMode: "stretch",
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center', 
+                        position: 'absolute',
+                        right: 0,
+                        height: 25,
+                        width: 25,
                                 }} 
                         source={passwordShown ? require('../assets/details-icon/eye-show.png') : require('../assets/details-icon/eye-hide.png')}
                 />
@@ -125,8 +138,9 @@ function Login() {
                     <Text style={styles.text}>to Register.</Text>
                 </View>
 
+            
             </View>
-        </SafeAreaView>
+        </View>
     </ScrollView>
     );
 }
@@ -140,13 +154,14 @@ export default () => {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: 'rgb(255,0,0)'
+        height: '100%',
+        backgroundColor: 'rgb(255,0,0)',
     },
 
     mainlogo:{
-        display: 'flex',
+        height: '50%',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
     },
 
     tagline:{
@@ -164,43 +179,32 @@ const styles = StyleSheet.create({
     },
 
     loginForm:{
-        paddingTop: 30,
+        display:'flex',
+        height: '50%',
+        paddingTop: 5,
         width: '100%',
-        alignItems: 'center',
         backgroundColor:'white',
-        borderRadius: 20
+        borderRadius: 20,    
     },
 
     userInput:{
-        paddingTop: 8,
         flex: 1,
+        paddingTop: 5,
         flexDirection: 'row',
         flexWrap: 'nowrap',
         justifyContent: 'center',
         alignItems: 'center',
         width: "100%"
-    },
-
-    userIcon:{
-        position: 'absolute',
-        paddingTop: 12,
-        left: 50
     },
 
     passInput:{
-        paddingTop: 15,
+        paddingTop: 2,
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'nowrap',
         justifyContent: 'center',
         alignItems: 'center',
         width: "100%"
-    },
-
-    userPass:{
-        position: 'absolute',
-        paddingTop: 12,
-        left: 50
     },
 
     forgotPass:{
@@ -211,12 +215,6 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 15,
         fontWeight: '700'
-    },
-
-    eyecon:{
-        position: 'absolute',
-        paddingTop: 15,
-        right: 50
     },
 
     logButton:{
