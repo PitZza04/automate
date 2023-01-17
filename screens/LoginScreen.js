@@ -79,7 +79,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
           <Pressable style={{ marginTop: 20 }}>
-            <TextInput style={styles.primaryText}>Forgot Password?</TextInput>
+            <Text style={styles.primaryText}>Forgot Password?</Text>
           </Pressable>
           <TouchableOpacity>
             <View style={styles.loginButton}>
@@ -90,7 +90,7 @@ const LoginScreen = () => {
           <View style={styles.registerWrapper}>
             <Text style={styles.text}>Don't have an Account yet? Tap </Text>
             <TouchableOpacity>
-              <Text style={[styles.primaryText, { fontSize: 12 }]}>here </Text>
+              <Text style={[styles.primaryText, { fontSize: 15 }]}>here </Text>
             </TouchableOpacity>
             <Text style={styles.text}>to Register.</Text>
           </View>
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#DF3111",
+    paddingTop: 30,
   },
   taglineWrapper: {
     justifyContent: "center",
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
   },
   loginWrapper: {
     flex: 1,
-    paddingVertical: 50,
+    marginTop: 20,
+    paddingTop: 50,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
@@ -154,25 +156,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   loginButton: {
-    marginTop: 15,
+    marginVertical: 15,
     backgroundColor: "#DF3111",
     justifyContent: "center",
     alignItems: "center",
-    width: 120,
+    width: 200,
     borderRadius: 10,
     padding: 5,
+    height: 40,
   },
   textLogin: {
     color: "#fff",
   },
   registerWrapper: {
-    position: "absolute",
-    bottom: 0,
     marginBottom: 10,
     flexDirection: "row",
     alignSelf: "center",
   },
   text: {
-    fontSize: 12,
+    fontSize: 15,
   },
 });
