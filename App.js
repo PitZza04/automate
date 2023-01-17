@@ -1,23 +1,23 @@
-import React from "react";
-
-import Login from './src/Login';
-import Register from './src/Register';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from "@react-navigation/stack";
-
-const Stack = createStackNavigator();
-
-function App(){
-  return(
-
-    <Stack.Navigator screenOptions={{headerShown: false}} >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-    </Stack.Navigator>
-
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import StackNavigation from "./navigation/StackNavigation";
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 export default () => {
   return (
