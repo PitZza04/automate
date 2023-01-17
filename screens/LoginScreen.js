@@ -8,13 +8,53 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
+import auth from "../firebase/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
 
+  const navigation = useNavigation();
+  // useEffect(() => {
+  //   const unsubsribe = auth.onAuthStateChanged((user) => {
+  //     if (user) {
+  //       navigation.navigate("Register");
+  //     }
+  //   });
+
+  //   return unsubsribe;
+  // }, []);
+  // const handleSignUp = () => {
+  //   createUserWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       console.log(user.email);
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       const errorMessage = error.message;
+  //       console.log(errorMessage);
+  //     });
+  // };
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Login with ", user.email);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.taglineWrapper}>
@@ -78,21 +118,33 @@ const LoginScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <Pressable style={{ marginTop: 20 }}>
-            <Text style={styles.primaryText}>Forgot Password?</Text>
-          </Pressable>
-          <TouchableOpacity>
-            <View style={styles.loginButton}>
-              <Text style={styles.textLogin}>LOGIN</Text>
-            </View>
-          </TouchableOpacity>
 
           <View style={styles.registerWrapper}>
-            <Text style={styles.text}>Don't have an Account yet? Tap </Text>
-            <TouchableOpacity>
-              <Text style={[styles.primaryText, { fontSize: 15 }]}>here </Text>
+            <Pressable
+              style={{ marginTop: 30 }}
+              onPress={() => {
+                navigation.navigate("Register");
+              }}
+            >
+              <Text style={styles.primaryText}>Forgot Password?</Text>
+            </Pressable>
+            <TouchableOpacity
+              onPress={handleLogin}
+              style={{ marginBottom: 10 }}
+            >
+              <View style={styles.loginButton}>
+                <Text style={styles.textLogin}>LOGIN</Text>
+              </View>
             </TouchableOpacity>
-            <Text style={styles.text}>to Register.</Text>
+            <View style={styles.registerLink}>
+              <Text style={styles.text}>Don't have an Account yet? Tap </Text>
+              <TouchableOpacity>
+                <Text style={[styles.primaryText, { fontSize: 15 }]}>
+                  here{" "}
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>to Register.</Text>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -113,10 +165,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 50,
   },
-  //   imageWrapper: {
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //   },
   tagline: {
     fontSize: 18,
     fontWeight: "700",
@@ -126,9 +174,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 15,
   },
   loginWrapper: {
-    flex: 1,
-    marginTop: 20,
-    paddingTop: 50,
+    marginTop: 30,
+    paddingVertical: 50,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
@@ -156,7 +203,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   loginButton: {
-    marginVertical: 15,
+    marginVertical: 30,
     backgroundColor: "#DF3111",
     justifyContent: "center",
     alignItems: "center",
@@ -169,9 +216,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   registerWrapper: {
-    marginBottom: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  registerLink: {
+    position: "absolute",
+    bottom: -15,
     flexDirection: "row",
-    alignSelf: "center",
   },
   text: {
     fontSize: 15,
