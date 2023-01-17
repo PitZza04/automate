@@ -34,7 +34,7 @@ const LoginScreen = () => {
   // const handleSignUp = () => {
   //   createUserWithEmailAndPassword(auth, email, password)
   //     .then((userCredential) => {
-  //       // Signed in
+  //       // Signed in`
   //       const user = userCredential.user;
   //       console.log(user.email);
   //       // ...
