@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { API_KEY } from "@env";
+
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: "auto-mate-dev.firebaseapp.com",
