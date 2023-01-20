@@ -71,6 +71,7 @@ const LoginScreen = () => {
           />
           <Text style={styles.tagline}>Your Personalized Mechanic</Text>
         </View>
+
         <View style={styles.loginWrapper}>
           <View
             style={[styles.inputWrapper, { marginBottom: 15, marginTop: 15 }]}
@@ -123,7 +124,7 @@ const LoginScreen = () => {
 
           <View style={styles.registerWrapper}>
             <Pressable
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 10 }}
               onPress={() => {
                 navigation.navigate("Register");
               }}
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   taglineWrapper: {
-    flex: 1.5,
+    flex: 0.8,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 25,
@@ -180,9 +181,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 15,
   },
   loginWrapper: {
-    flex: 1,
+    flex: 0.9,
     backgroundColor: "#fff",
-    justifyContent: "center",
     alignItems: "center",
     borderRadius: 30,
     marginBottom: 10,
@@ -222,12 +222,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   registerWrapper: {
+    flex: 0.9,
     justifyContent: "center",
     alignItems: "center",
   },
   registerLink: {
     position: "absolute",
-    bottom: -10,
+    bottom: 1,
     flexDirection: "row",
   },
   text: {
