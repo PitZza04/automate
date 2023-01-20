@@ -7,6 +7,8 @@ import {
   Pressable,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
@@ -56,23 +58,23 @@ const LoginScreen = () => {
       });
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.taglineWrapper}>
-        {/* <View style={styles.imageWrapper}> */}
-        <Image
-          style={{
-            resizeMode: "contain",
-            height: 200,
-            width: "90%",
-          }}
-          source={require("../assets/main-icon/main-logo.png")}
-        />
-        <Text style={styles.tagline}>Your Personalized Mechanic</Text>
-        {/* </View> */}
-      </View>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.taglineWrapper}>
+          <Image
+            style={{
+              resizeMode: "contain",
+              height: 200,
+              width: "90%",
+            }}
+            source={require("../assets/main-icon/main-logo.png")}
+          />
+          <Text style={styles.tagline}>Your Personalized Mechanic</Text>
+        </View>
         <View style={styles.loginWrapper}>
-          <View style={[styles.inputWrapper, { marginBottom: 15 }]}>
+          <View
+            style={[styles.inputWrapper, { marginBottom: 15, marginTop: 15 }]}
+          >
             <FontAwesome5
               name="user-alt"
               size={20}
@@ -121,7 +123,7 @@ const LoginScreen = () => {
 
           <View style={styles.registerWrapper}>
             <Pressable
-              style={{ marginTop: 30 }}
+              style={{ marginTop: 20 }}
               onPress={() => {
                 navigation.navigate("Register");
               }}
@@ -138,7 +140,9 @@ const LoginScreen = () => {
             </TouchableOpacity>
             <View style={styles.registerLink}>
               <Text style={styles.text}>Don't have an Account yet? Tap </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterNumber")}
+              >
                 <Text style={[styles.primaryText, { fontSize: 15 }]}>
                   here{" "}
                 </Text>
@@ -147,8 +151,8 @@ const LoginScreen = () => {
             </View>
           </View>
         </View>
-      </ScrollView>
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -157,13 +161,15 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#DF3111",
-    paddingTop: 30,
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
   taglineWrapper: {
+    flex: 1.5,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 25,
+    backgroundColor: "#DF3111",
   },
   tagline: {
     fontSize: 18,
@@ -174,8 +180,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 15,
   },
   loginWrapper: {
-    marginTop: 30,
-    paddingVertical: 50,
+    flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
@@ -192,6 +197,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     flexDirection: "row",
+    alignSelf: "center",
   },
   inputText: {
     marginLeft: 10,
@@ -203,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   loginButton: {
-    marginVertical: 30,
+    marginVertical: 15,
     backgroundColor: "#DF3111",
     justifyContent: "center",
     alignItems: "center",
@@ -221,7 +227,7 @@ const styles = StyleSheet.create({
   },
   registerLink: {
     position: "absolute",
-    bottom: -15,
+    bottom: -10,
     flexDirection: "row",
   },
   text: {
