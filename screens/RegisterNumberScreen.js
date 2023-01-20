@@ -9,21 +9,49 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   SafeAreaView,
+  Alert,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 
-import { useNavigation } from "@react-navigation/native";
-
-const RegisterNumberScreen = () => {
+const RegisterNumberScreen = ({ navigation }) => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
 
-  const navigation = useNavigation();
-
+  const handleSubmit = () => {
+    if (password !== password2) {
+      Alert.alert("Passwords do not match!");
+    } else {
+      // submit password
+      navigation.navigate("OTPScreen", {
+        phoneNumber: number,
+        password: password,
+      });
+    }
+  };
+  const sendVerification = async () => {
+    try {
+      const phoneProvider = new PhoneAuthProvider(auth);
+      const verificationId = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current
+      );
+      setVerificationId(verificationId);
+      showMessage({
+        text: "Verification code has been sent to your phone.",
+      });
+    } catch (err) {
+      showMessage({ text: `Error: ${err.message}`, color: "red" });
+    }
+    // const phoneProvider = new PhoneAuthProvider(auth);
+    // phoneProvider
+    //   .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
+    //   .then(setVerificationId);
+    // setPhoneNumber("");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
@@ -118,7 +146,7 @@ const RegisterNumberScreen = () => {
 
           <View style={styles.nextWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Register")}
+              onPress={handleSubmit}
               style={{ marginBottom: 30, marginTop: 30 }}
             >
               <View style={styles.nextButton}>
