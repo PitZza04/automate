@@ -77,7 +77,7 @@ const OTPScreen = ({ route, navigation }) => {
       <View style={styles.otpTextWrapper}>
         <Text style={styles.otpText}>Enter 6 Digit Code</Text>
         <Text style={styles.otpDetail}>
-          Please enter the 6 digit code that you received on your phone.
+          Please enter the 6 digit code that you received on your email.
         </Text>
       </View>
       <View style={styles.otpInputWrapper}>

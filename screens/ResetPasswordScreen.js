@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import RegisterNumberScreen from "./RegisterNumberScreen";
 
 const ResetPasswordScreen = () => {
   const [password, setPassword] = useState("");
