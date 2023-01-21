@@ -6,6 +6,7 @@ import RegisterNumberScreen from "../screens/RegisterNumberScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import OTPScreen from "../screens/OTPScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
@@ -45,6 +46,17 @@ const StackNavigation = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPasswordScreen}
+        options={{
+          title: "",
+          headerStyle: {
+            backgroundColor: "#DF3111",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
         options={{
           title: "",
           headerStyle: {

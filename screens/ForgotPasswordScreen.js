@@ -7,35 +7,33 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper}>
         <Text style={styles.biggerText}>Forgot Password</Text>
         <Text style={styles.detail}>
-          Set the new password for your account so you can login and access all
-          the features.
+          We will send to your email a 6 digit code for verification process.
         </Text>
       </View>
-      <View style={styles.passwordForm}>
-        <Text style={styles.text}>New Password</Text>
+      <View style={styles.inputWrapper}>
+        <Text style={styles.label}>E-mail</Text>
         <TextInput
           style={styles.inputText}
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          name="Password"
-        ></TextInput>
-        <Text style={styles.text}>Confirm Password</Text>
-        <TextInput
-          style={styles.inputText}
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          name="Password"
-        ></TextInput>
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email or Mobile Number"
+          name="Email"
+          returnKeyType="send"
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
       </View>
-      <TouchableOpacity style={{ marginTop: 20 }}>
+      <TouchableOpacity
+        style={{ marginTop: 20 }}
+        onPress={() => navigation.navigate("OTPScreen")}
+      >
         <View style={styles.nextButton}>
           <Text style={styles.nextText}>Continue</Text>
         </View>
@@ -61,28 +59,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#D31111",
   },
+  label: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#D31111",
+  },
   detail: {
     marginTop: 13,
     color: "#50555C",
     fontSize: 17,
     fontWeight: "400",
   },
-  passwordForm: {
+  inputWrapper: {
     height: 200,
     backgroundColor: "#fff",
     marginHorizontal: 30,
     justifyContent: "center",
   },
   inputText: {
-    marginTop: 2,
-    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginTop: 5,
     alignItems: "center",
     width: "100%",
     height: 40,
     borderRadius: 10,
-    borderColor: "#625c58",
     justifyContent: "center",
-    borderWidth: 1,
+    color: "#50555C",
   },
   text: {
     marginTop: 20,
