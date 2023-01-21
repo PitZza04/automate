@@ -51,10 +51,12 @@ const RegisterNumberScreen = () => {
               value={number}
               onChangeText={setNumber}
               placeholder="Enter your Mobile Number"
-              name="Email"
+              name="MobileNum"
               returnKeyType="send"
               autoCorrect={false}
               autoCapitalize="none"
+              keyboardType="numeric"
+              maxLength={11}
             ></TextInput>
           </View>
 
@@ -99,7 +101,7 @@ const RegisterNumberScreen = () => {
               value={password2}
               onChangeText={setPassword2}
               placeholder="Confirm Password"
-              name="Password"
+              name="ConfirmPassword"
               secureTextEntry={passwordShown2}
             ></TextInput>
             <TouchableOpacity
