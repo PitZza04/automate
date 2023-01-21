@@ -9,12 +9,32 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   SafeAreaView,
+  Button,
 } from "react-native";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 
 const RegisterScreen = () => {
+  const [openCamera, setOpenCamera] = useState(null);
+  const [image, setImage] = useState(null);
+
+  const camera = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    if (!result.canceled) {
+      setOpenCamera(result.assets);
+    }
+  };
+
   const [firstname, setFirstname] = useState("");
   const [middlename, setMiddlename] = useState("");
   const [lastname, setLastname] = useState("");
@@ -76,7 +96,7 @@ const RegisterScreen = () => {
             <Picker
               selectedValue={extensionname}
               style={{
-                height: 35,
+                height: 30,
                 width: 150,
                 backgroundColor: "#ecf2f8",
               }}
@@ -108,10 +128,11 @@ const RegisterScreen = () => {
             <Picker
               selectedValue={city}
               style={{
-                height: 35,
+                height: 30,
                 width: 150,
                 backgroundColor: "#ecf2f8",
               }}
+              itemStyle={{ justifyContent: "center" }}
               onValueChange={(itemValue, itemIndex) => setCity(itemValue)}
             >
               <Picker.Item label="-Select City-" value="" />
@@ -122,6 +143,7 @@ const RegisterScreen = () => {
               <Picker.Item label="Murcia" value="Murcia" />
             </Picker>
           </View>
+
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Email Address:</Text>
             <TextInput
@@ -135,8 +157,9 @@ const RegisterScreen = () => {
               keyboardType="text"
             ></TextInput>
           </View>
+
           <View style={styles.inputWrapper}>
-            <Text style={styles.label}>ID Number:</Text>
+            <Text style={styles.label}>Number of License ID:</Text>
             <TextInput
               style={styles.inputText}
               value={idnumber}
@@ -148,13 +171,23 @@ const RegisterScreen = () => {
               keyboardType="text"
             ></TextInput>
           </View>
-          <View style={styles.nextWrapper}>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              onPress={camera}
+              style={{ marginTop: 5, marginBottom: 5 }}
+            >
+              <View style={styles.buttonStyle}>
+                <Text style={styles.buttonLabel}>TAKE PHOTO OF ID</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonWrapper}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Login")}
-              style={{ marginBottom: 30, marginTop: 30 }}
+              style={{ marginBottom: 5 }}
             >
-              <View style={styles.nextButton}>
-                <Text style={styles.nextText}>NEXT</Text>
+              <View style={styles.buttonStyle}>
+                <Text style={styles.buttonLabel}>NEXT</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -178,7 +211,7 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     borderBottomWidth: 2,
     alignSelf: "center",
-    marginVertical: 5,
+    marginVertical: 20,
     marginTop: 10,
   },
   label: {
@@ -189,15 +222,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   pickerWrapper: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 20,
   },
-  nextWrapper: {
+  buttonWrapper: {
     justifyContent: "center",
     alignItems: "center",
   },
-  nextButton: {
-    marginVertical: 15,
+  buttonStyle: {
+    marginVertical: 10,
     backgroundColor: "#DF3111",
     justifyContent: "center",
     alignItems: "center",
@@ -206,7 +239,7 @@ const styles = StyleSheet.create({
     padding: 5,
     height: 40,
   },
-  nextText: {
+  buttonLabel: {
     color: "#fff",
   },
 });
