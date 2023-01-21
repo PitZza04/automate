@@ -30,8 +30,11 @@ const RegisterScreen = () => {
 
     const result = await ImagePicker.launchCameraAsync();
 
+    // console.log(result);
+
     if (!result.canceled) {
-      setOpenCamera(result.assets);
+      setOpenCamera(result.assets[0].uri);
+      console.log(result.assets);
     }
   };
 
@@ -191,6 +194,12 @@ const RegisterScreen = () => {
               </View>
             </TouchableOpacity>
           </View>
+
+          {/* <View style={styles.imageContainer}>
+            {openCamera !== "" && (
+              <Image source={{ uri: openCamera }} style={styles.image} />
+            )}
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -241,5 +250,14 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: "#fff",
+  },
+
+  imageContainer: {
+    padding: 30,
+  },
+  image: {
+    width: 400,
+    height: 300,
+    resizeMode: "cover",
   },
 });
