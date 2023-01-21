@@ -126,7 +126,7 @@ const LoginScreen = () => {
             <Pressable
               style={{ marginTop: 10 }}
               onPress={() => {
-                navigation.navigate("Register");
+                navigation.navigate("ResetPassword");
               }}
             >
               <Text style={styles.primaryText}>Forgot Password?</Text>

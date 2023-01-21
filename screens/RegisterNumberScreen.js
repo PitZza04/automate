@@ -4,31 +4,36 @@ import {
   View,
   Image,
   TextInput,
-  Pressable,
   TouchableOpacity,
-  ScrollView,
   KeyboardAvoidingView,
   SafeAreaView,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
-
+import { PhoneAuthProvider } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { app } from "../firebase/firebase";
 const RegisterNumberScreen = ({ navigation }) => {
+  const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [message, showMessage] = useState("");
   const [password2, setPassword2] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
-
-  const handleSubmit = () => {
+  const [verificationId, setVerificationId] = useState();
+  const handleSubmit = async () => {
     if (password !== password2) {
       Alert.alert("Passwords do not match!");
     } else {
       // submit password
+      await sendVerification();
       navigation.navigate("OTPScreen", {
         phoneNumber: number,
         password: password,
+        message: message,
+        verificationId: verificationId,
       });
     }
   };
@@ -55,6 +60,11 @@ const RegisterNumberScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
+        {/* <FirebaseRecaptchaVerifierModal
+          ref={recaptchaVerifier}
+          firebaseConfig={app}
+          attemptInvisibleVerification={true}
+        /> */}
         <View style={styles.taglineWrapper}>
           <Image
             style={{
@@ -81,6 +91,7 @@ const RegisterNumberScreen = ({ navigation }) => {
               placeholder="Enter your Mobile Number"
               name="Email"
               returnKeyType="send"
+              keyboardType="phone-pad"
               autoCorrect={false}
               autoCapitalize="none"
             ></TextInput>

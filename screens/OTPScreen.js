@@ -6,26 +6,34 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useRef } from "react";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+
 import firebase from "firebase/compat/app";
 import { auth, app } from "../firebase/firebase";
 
-const OTPScreen = ({ routes, navigation }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
+const OTPScreen = ({ route, navigation }) => {
   const [code, setCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
   const recaptchaVerifier = useRef(null);
   const sendVerification = async () => {
     try {
       const phoneProvider = new PhoneAuthProvider(auth);
-      const verificationId = await phoneProvider.verifyPhoneNumber(
-        phoneNumber,
-        recaptchaVerifier.current
-      );
-      setVerificationId(verificationId);
-      showMessage({
-        text: "Verification code has been sent to your phone.",
-      });
+      if (password !== password2) {
+        Alert.alert("Passwords do not match!");
+      } else {
+        const verificationId = await phoneProvider.verifyPhoneNumber(
+          route.params.phoneNumber,
+          recaptchaVerifier.current
+        );
+        setVerificationId(verificationId);
+        showMessage({
+          text: "Verification code has been sent to your phone.",
+        });
+        // submit password
+        navigation.navigate("OTPScreen", {
+          phoneNumber: number,
+          password: password,
+        });
+      }
     } catch (err) {
       showMessage({ text: `Error: ${err.message}`, color: "red" });
     }
@@ -35,31 +43,41 @@ const OTPScreen = ({ routes, navigation }) => {
     //   .then(setVerificationId);
     // setPhoneNumber("");
   };
-  const confirmCode = () => {
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-      verificationId,
-      code
-    );
-    signInWithCredential(auth, credential)
-      .then(() => {
-        setCode("");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    Alert.alert("Login Successfully");
+
+  const confirmCode = async () => {
+    try {
+      const credential = PhoneAuthProvider.credential(
+        verificationId,
+        verificationCode
+      );
+      await signInWithCredential(auth, credential);
+      showMessage({ text: "Phone authentication successful 👍" });
+    } catch (err) {
+      showMessage({ text: `Error: ${err.message}`, color: "red" });
+    }
   };
+
+  // const confirmCode = () => {
+  //   const credential = firebase.auth.PhoneAuthProvider.credential(
+  //     verificationId,
+  //     code
+  //   );
+  //   signInWithCredential(auth, credential)
+  //     .then(() => {
+  //       setCode("");
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //     });
+  //   Alert.alert("Login Successfully");
+  // };
   const handleOnSubmit = () => {};
   return (
     <View style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={app}
-      />
       <View style={styles.otpTextWrapper}>
         <Text style={styles.otpText}>Enter 6 Digit Code</Text>
         <Text style={styles.otpDetail}>
-          Enter the 6 digit code that you received on your email.
+          Please enter the 6 digit code that you received on your phone.
         </Text>
       </View>
       <View style={styles.otpInputWrapper}>
@@ -72,7 +90,8 @@ const OTPScreen = ({ routes, navigation }) => {
           editable={true}
         ></TextInput>
         <TouchableOpacity
-          onPress={handleOnSubmit}
+          onPress={confirmCode}
+          disabled={!verificationId}
           style={{ marginBottom: 30, marginTop: 30 }}
         >
           <View style={styles.nextButton}>
@@ -101,7 +120,7 @@ const styles = StyleSheet.create({
     color: "#D31111",
   },
   otpDetail: {
-    marginTop: 5,
+    marginTop: 13,
     color: "#50555C",
     fontSize: 17,
     fontWeight: "400",
