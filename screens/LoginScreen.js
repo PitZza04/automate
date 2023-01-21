@@ -17,13 +17,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useNavigation } from "@react-navigation/native";
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
 
-  const navigation = useNavigation();
   // useEffect(() => {
   //   const unsubsribe = auth.onAuthStateChanged((user) => {
   //     if (user) {
@@ -126,7 +124,7 @@ const LoginScreen = () => {
             <Pressable
               style={{ marginTop: 10 }}
               onPress={() => {
-                navigation.navigate("Register");
+                navigation.navigate("ForgotPassword");
               }}
             >
               <Text style={styles.primaryText}>Forgot Password?</Text>
