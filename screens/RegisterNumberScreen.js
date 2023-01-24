@@ -23,20 +23,20 @@ const RegisterNumberScreen = ({ navigation }) => {
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
   const [verificationId, setVerificationId] = useState();
-  const handleSubmit = async () => {
-    if (password !== password2) {
-      Alert.alert("Passwords do not match!");
-    } else {
-      // submit password
-      await sendVerification();
-      navigation.navigate("OTPScreen", {
-        phoneNumber: number,
-        password: password,
-        message: message,
-        verificationId: verificationId,
-      });
-    }
-  };
+  // const handleSubmit = async () => {
+  //   if (password !== password2) {
+  //     Alert.alert("Passwords do not match!");
+  //   } else {
+  //     // submit password
+  //     await sendVerification();
+  //     navigation.navigate("OTPScreen", {
+  //       phoneNumber: number,
+  //       password: password,
+  //       message: message,
+  //       verificationId: verificationId,
+  //     });
+  //   }
+  // };
   const sendVerification = async () => {
     try {
       const phoneProvider = new PhoneAuthProvider(auth);
@@ -94,7 +94,6 @@ const RegisterNumberScreen = ({ navigation }) => {
               keyboardType="phone-pad"
               autoCorrect={false}
               autoCapitalize="none"
-              keyboardType="numeric"
               maxLength={11}
             ></TextInput>
           </View>
@@ -159,7 +158,7 @@ const RegisterNumberScreen = ({ navigation }) => {
 
           <View style={styles.nextWrapper}>
             <TouchableOpacity
-              onPress={handleSubmit}
+              onPress={() => navigation.navigate("Register")}
               style={{ marginBottom: 30, marginTop: 30 }}
             >
               <View style={styles.nextButton}>
