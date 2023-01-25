@@ -186,7 +186,7 @@ const RegisterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.navigate("VehicleRegister")}
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>
