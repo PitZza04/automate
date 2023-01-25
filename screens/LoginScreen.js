@@ -60,7 +60,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
-        <View style={styles.taglineWrapper}>
+        <View style={styles.logoWrapper}>
           <Image
             style={{
               resizeMode: "contain",
@@ -69,7 +69,6 @@ const LoginScreen = () => {
             }}
             source={require("../assets/main-icon/main-logo.png")}
           />
-          <Text style={styles.tagline}>Your Personalized Mechanic</Text>
         </View>
 
         <View style={styles.loginWrapper}>
@@ -165,20 +164,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
   },
-  taglineWrapper: {
+  logoWrapper: {
     flex: 0.8,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 25,
     backgroundColor: "#DF3111",
-  },
-  tagline: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#fff",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowColor: "black",
-    textShadowRadius: 15,
   },
   loginWrapper: {
     flex: 0.9,
