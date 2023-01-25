@@ -4,30 +4,69 @@ import {
   View,
   Image,
   TextInput,
-  Pressable,
   TouchableOpacity,
-  ScrollView,
   KeyboardAvoidingView,
   SafeAreaView,
+  Alert,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
-
-import { useNavigation } from "@react-navigation/native";
-
-const RegisterNumberScreen = () => {
+import { PhoneAuthProvider } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { app } from "../firebase/firebase";
+const RegisterNumberScreen = ({ navigation, route }) => {
+  const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [message, showMessage] = useState("");
   const [password2, setPassword2] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
-
-  const navigation = useNavigation();
-
+  const [verificationId, setVerificationId] = useState();
+  const handleSubmit = async () => {
+    if (password !== password2) {
+      Alert.alert("Passwords do not match!");
+    } else {
+      // submit password
+      // await sendVerification();
+      navigation.navigate(
+        {
+          phoneNumber: number,
+          password: password,
+        },
+        "RegisterScreen"
+      );
+    }
+  };
+  const sendVerification = async () => {
+    try {
+      const phoneProvider = new PhoneAuthProvider(auth);
+      const verificationId = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current
+      );
+      setVerificationId(verificationId);
+      showMessage({
+        text: "Verification code has been sent to your phone.",
+      });
+    } catch (err) {
+      showMessage({ text: `Error: ${err.message}`, color: "red" });
+    }
+    // const phoneProvider = new PhoneAuthProvider(auth);
+    // phoneProvider
+    //   .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
+    //   .then(setVerificationId);
+    // setPhoneNumber("");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logoWrapper}>
+        {/* <FirebaseRecaptchaVerifierModal
+          ref={recaptchaVerifier}
+          firebaseConfig={app}
+          attemptInvisibleVerification={true}
+        /> */}
           <Image
             style={{
               resizeMode: "contain",
@@ -52,9 +91,9 @@ const RegisterNumberScreen = () => {
               placeholder="Enter your Mobile Number"
               name="MobileNum"
               returnKeyType="send"
+              keyboardType="phone-pad"
               autoCorrect={false}
               autoCapitalize="none"
-              keyboardType="numeric"
               maxLength={11}
             ></TextInput>
           </View>
