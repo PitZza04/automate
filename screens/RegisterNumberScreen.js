@@ -14,7 +14,7 @@ import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 import { PhoneAuthProvider } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { app } from "../firebase/firebase";
-const RegisterNumberScreen = ({ navigation }) => {
+const RegisterNumberScreen = ({ navigation, route }) => {
   const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -23,20 +23,21 @@ const RegisterNumberScreen = ({ navigation }) => {
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
   const [verificationId, setVerificationId] = useState();
-  // const handleSubmit = async () => {
-  //   if (password !== password2) {
-  //     Alert.alert("Passwords do not match!");
-  //   } else {
-  //     // submit password
-  //     await sendVerification();
-  //     navigation.navigate("OTPScreen", {
-  //       phoneNumber: number,
-  //       password: password,
-  //       message: message,
-  //       verificationId: verificationId,
-  //     });
-  //   }
-  // };
+  const handleSubmit = async () => {
+    if (password !== password2) {
+      Alert.alert("Passwords do not match!");
+    } else {
+      // submit password
+      // await sendVerification();
+      navigation.navigate(
+        {
+          phoneNumber: number,
+          password: password,
+        },
+        "RegisterScreen"
+      );
+    }
+  };
   const sendVerification = async () => {
     try {
       const phoneProvider = new PhoneAuthProvider(auth);

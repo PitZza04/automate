@@ -13,12 +13,13 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
+
+  console.log(route);
 
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -46,14 +47,13 @@ const RegisterScreen = () => {
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [idnumber, setIdnumber] = useState("");
-  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.inputWrapper}>
-            <Text style={styles.label}>First Name:</Text>
+            <Text style={styles.label}>First Name: </Text>
             <TextInput
               style={styles.inputText}
               value={firstname}
