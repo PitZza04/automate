@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import auth from "../firebase/firebase";
+import auth from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -31,19 +31,7 @@ const LoginScreen = ({ navigation }) => {
 
   //   return unsubsribe;
   // }, []);
-  // const handleSignUp = () => {
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in`
-  //       const user = userCredential.user;
-  //       console.log(user.email);
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       const errorMessage = error.message;
-  //       console.log(errorMessage);
-  //     });
-  // };
+ 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

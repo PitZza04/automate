@@ -2,35 +2,37 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Pressable,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
   SafeAreaView,
-  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "@react-native-firebase/app";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-
-const RegisterScreen = () => {
+import { app as db } from "../config/firebase";
+const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
-
+  const phone = route.params.phone;
+  const userID = route.params.user_id;
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your camera!");
+      alert("You've refused to allow this app to access your camera!");
       return;
     }
 
     const result = await ImagePicker.launchCameraAsync();
-
-    // console.log(result);
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
@@ -46,8 +48,20 @@ const RegisterScreen = () => {
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [idnumber, setIdnumber] = useState("");
-  const navigation = useNavigation();
-
+  const userRef = db.collection("users").doc(userID);
+  const handleOnSubmit = async () => {
+    await set(userRef, {
+      city: city,
+      email: email,
+      extName: extensionname,
+      firstName: firstname,
+      homeAddress: homeaddress,
+      lastName: lastname,
+      license_id: idnumber,
+      middleName: middlename,
+      phoneNumber: phone,
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -186,7 +200,7 @@ const RegisterScreen = () => {
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+              onPress={handleOnSubmit}
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>

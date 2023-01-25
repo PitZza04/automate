@@ -13,16 +13,18 @@ import React, { useState, useRef } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 import { PhoneAuthProvider } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { app } from "../firebase/firebase";
+// import { auth } from "../config/firebase";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const RegisterNumberScreen = ({ navigation }) => {
+  const auth = getAuth();
   const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [message, showMessage] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
-  const [verificationId, setVerificationId] = useState();
+  // const [verificationId, setVerificationId] = useState();
   // const handleSubmit = async () => {
   //   if (password !== password2) {
   //     Alert.alert("Passwords do not match!");
@@ -37,6 +39,26 @@ const RegisterNumberScreen = ({ navigation }) => {
   //     });
   //   }
   // };
+
+  const handleSignUp = () => {
+    const email = number + "@automate.com";
+
+    if (password === confirmPassword) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in`
+          const user = userCredential.user;
+          navigation.navigate("Register", {
+            user_id: user.uid,
+            phone: number,
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
+    }
+  };
   const sendVerification = async () => {
     try {
       const phoneProvider = new PhoneAuthProvider(auth);
@@ -136,8 +158,8 @@ const RegisterNumberScreen = ({ navigation }) => {
             />
             <TextInput
               style={styles.inputText}
-              value={password2}
-              onChangeText={setPassword2}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
               placeholder="Confirm Password"
               name="ConfirmPassword"
               secureTextEntry={passwordShown2}
@@ -158,7 +180,7 @@ const RegisterNumberScreen = ({ navigation }) => {
 
           <View style={styles.nextWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Register")}
+              onPress={handleSignUp}
               style={{ marginBottom: 30, marginTop: 30 }}
             >
               <View style={styles.nextButton}>
