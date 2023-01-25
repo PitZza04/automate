@@ -7,6 +7,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import OTPScreen from "../screens/OTPScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
@@ -43,6 +44,24 @@ const StackNavigation = () => {
         name="Register"
         component={RegisterScreen}
       />
+
+      <Stack.Screen
+        options={{
+          title: "VEHICLE REGISTER",
+          headerStyle: {
+            backgroundColor: "#DF3111",
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "500",
+            fontSize: 18,
+          },
+        }}
+        name="VehicleRegister"
+        component={VehicleRegisterScreen}
+      />
+
       <Stack.Screen
         name="ResetPassword"
         component={ResetPasswordScreen}
