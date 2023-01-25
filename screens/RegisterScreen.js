@@ -14,13 +14,17 @@ import {
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import uuid from "react-native-uuid";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
+  //const {phoneNumber}
+  const { phoneNumber, password } = route.params;
+  const uniqueID = uuid.v4().substring(0, 18);
 
-  console.log(route);
-
+  const noemail = uniqueID + "@automate.com";
+  console.log(noemail);
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -37,6 +41,11 @@ const RegisterScreen = ({ route, navigation }) => {
       setOpenCamera(result.assets[0].uri);
       console.log(result.assets);
     }
+  };
+
+  const handleOnSubmit = async () => {
+    const userRef = collection(db, "users");
+    await addDoc(userRef, {});
   };
 
   const [firstname, setFirstname] = useState("");
@@ -186,7 +195,7 @@ const RegisterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+              onPress={handleOnSubmit}
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>
