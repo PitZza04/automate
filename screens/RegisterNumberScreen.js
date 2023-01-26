@@ -13,10 +13,11 @@ import React, { useState, useRef } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 import { PhoneAuthProvider } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-// import { auth } from "../config/firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const RegisterNumberScreen = ({ navigation }) => {
   const auth = getAuth();
+import { app } from "../firebase/firebase";
+const RegisterNumberScreen = ({ navigation, route }) => {
   const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +25,7 @@ const RegisterNumberScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
+
   // const [verificationId, setVerificationId] = useState();
   // const handleSubmit = async () => {
   //   if (password !== password2) {
@@ -82,12 +84,12 @@ const RegisterNumberScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
-        {/* <FirebaseRecaptchaVerifierModal
+        <View style={styles.logoWrapper}>
+          {/* <FirebaseRecaptchaVerifierModal
           ref={recaptchaVerifier}
           firebaseConfig={app}
           attemptInvisibleVerification={true}
         /> */}
-        <View style={styles.taglineWrapper}>
           <Image
             style={{
               resizeMode: "contain",
@@ -96,7 +98,6 @@ const RegisterNumberScreen = ({ navigation }) => {
             }}
             source={require("../assets/main-icon/main-logo.png")}
           />
-          <Text style={styles.tagline}>Your Personalized Mechanic</Text>
         </View>
         <View style={styles.registrationWrapper}>
           <View style={styles.inputWrapper}>
@@ -119,6 +120,7 @@ const RegisterNumberScreen = ({ navigation }) => {
               maxLength={11}
             ></TextInput>
           </View>
+          <Text style={styles.label}>Available for all networks.</Text>
 
           <View style={[styles.inputWrapper, { marginTop: 10 }]}>
             <FontAwesome5
@@ -201,20 +203,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
   },
-  taglineWrapper: {
+  logoWrapper: {
     flex: 0.8,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 25,
     backgroundColor: "#DF3111",
-  },
-  tagline: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#fff",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowColor: "black",
-    textShadowRadius: 15,
   },
   registrationWrapper: {
     flex: 0.8,
@@ -236,6 +230,13 @@ const styles = StyleSheet.create({
   inputText: {
     marginLeft: 10,
     width: "90%",
+  },
+  label: {
+    fontSize: 12,
+    alignSelf: "flex-start",
+    marginLeft: 25,
+    color: "#64615e",
+    opacity: 0.9,
   },
   nextWrapper: {
     justifyContent: "center",

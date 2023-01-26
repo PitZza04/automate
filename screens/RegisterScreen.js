@@ -34,6 +34,11 @@ const RegisterScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleOnSubmit = async () => {
+    const userRef = collection(db, "users");
+    await addDoc(userRef, {});
+  };
+
   const [firstname, setFirstname] = useState("");
   const [middlename, setMiddlename] = useState("");
   const [lastname, setLastname] = useState("");
@@ -42,6 +47,7 @@ const RegisterScreen = ({ route, navigation }) => {
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [idnumber, setIdnumber] = useState("");
+
   //const userRef = collection(db, "users");
   const handleOnSubmit = async () => {
     try {
@@ -66,7 +72,7 @@ const RegisterScreen = ({ route, navigation }) => {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.inputWrapper}>
-            <Text style={styles.label}>First Name:</Text>
+            <Text style={styles.label}>First Name: </Text>
             <TextInput
               style={styles.inputText}
               value={firstname}
