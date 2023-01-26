@@ -13,10 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
 import auth from "../firebase/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

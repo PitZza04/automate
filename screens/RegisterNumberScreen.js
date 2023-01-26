@@ -29,13 +29,10 @@ const RegisterNumberScreen = ({ navigation, route }) => {
     } else {
       // submit password
       // await sendVerification();
-      navigation.navigate(
-        {
-          phoneNumber: number,
-          password: password,
-        },
-        "RegisterScreen"
-      );
+      navigation.navigate("Register", {
+        phoneNumber: number,
+        password: password,
+      });
     }
   };
   const sendVerification = async () => {
@@ -159,7 +156,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
 
           <View style={styles.nextWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Register")}
+              onPress={handleSubmit}
               style={{ marginBottom: 30, marginTop: 30 }}
             >
               <View style={styles.nextButton}>
