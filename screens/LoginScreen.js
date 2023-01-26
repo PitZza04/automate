@@ -12,13 +12,12 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import auth from "../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
-
+  const auth = getAuth();
   // useEffect(() => {
   //   const unsubsribe = auth.onAuthStateChanged((user) => {
   //     if (user) {
@@ -28,19 +27,7 @@ const LoginScreen = ({ navigation }) => {
 
   //   return unsubsribe;
   // }, []);
-  // const handleSignUp = () => {
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in`
-  //       const user = userCredential.user;
-  //       console.log(user.email);
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       const errorMessage = error.message;
-  //       console.log(errorMessage);
-  //     });
-  // };
+
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

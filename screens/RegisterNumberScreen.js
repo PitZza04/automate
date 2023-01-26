@@ -13,26 +13,52 @@ import React, { useState, useRef } from "react";
 import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 import { PhoneAuthProvider } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+const RegisterNumberScreen = ({ navigation }) => {
+  const auth = getAuth();
 import { app } from "../firebase/firebase";
 const RegisterNumberScreen = ({ navigation, route }) => {
   const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [message, showMessage] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
-  const [verificationId, setVerificationId] = useState();
-  const handleSubmit = async () => {
-    if (password !== password2) {
-      Alert.alert("Passwords do not match!");
-    } else {
-      // submit password
-      // await sendVerification();
-      navigation.navigate("Register", {
-        phoneNumber: number,
-        password: password,
-      });
+
+  // const [verificationId, setVerificationId] = useState();
+  // const handleSubmit = async () => {
+  //   if (password !== password2) {
+  //     Alert.alert("Passwords do not match!");
+  //   } else {
+  //     // submit password
+  //     await sendVerification();
+  //     navigation.navigate("OTPScreen", {
+  //       phoneNumber: number,
+  //       password: password,
+  //       message: message,
+  //       verificationId: verificationId,
+  //     });
+  //   }
+  // };
+
+  const handleSignUp = () => {
+    const email = number + "@automate.com";
+
+    if (password === confirmPassword) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in`
+          const user = userCredential.user;
+          navigation.navigate("Register", {
+            user_id: user.uid,
+            phone: number,
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
     }
   };
   const sendVerification = async () => {
@@ -134,8 +160,8 @@ const RegisterNumberScreen = ({ navigation, route }) => {
             />
             <TextInput
               style={styles.inputText}
-              value={password2}
-              onChangeText={setPassword2}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
               placeholder="Confirm Password"
               name="ConfirmPassword"
               secureTextEntry={passwordShown2}
@@ -156,7 +182,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
 
           <View style={styles.nextWrapper}>
             <TouchableOpacity
-              onPress={handleSubmit}
+              onPress={handleSignUp}
               style={{ marginBottom: 30, marginTop: 30 }}
             >
               <View style={styles.nextButton}>

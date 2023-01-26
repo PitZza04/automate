@@ -8,7 +8,7 @@ import {
 import React, { useState, useRef } from "react";
 
 import firebase from "firebase/compat/app";
-import { auth, app } from "../firebase/firebase";
+import { auth, app } from "../config/firebase";
 
 const OTPScreen = ({ route, navigation }) => {
   const [code, setCode] = useState("");

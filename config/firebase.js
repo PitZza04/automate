@@ -1,9 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  PhoneAuthProvider,
-  signInWithCredential,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import Constants from "expo-constants";
 
 const firebaseConfig = {
@@ -20,4 +16,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export default { auth, app };
+export default auth;

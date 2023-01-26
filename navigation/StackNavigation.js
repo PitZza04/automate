@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
     <Stack.Navigator>
-      {/* initialRouteName="OTPScreen" */}
+      {/* initialRouteName="Register" */}
       <Stack.Screen
         options={{
           headerShown: false,

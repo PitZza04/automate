@@ -2,40 +2,31 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Pressable,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
   SafeAreaView,
-  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import uuid from "react-native-uuid";
+import { app as db } from "../config/firebase";
+import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
-  //const {phoneNumber}
-  const { phoneNumber, password } = route.params;
-  const uniqueID = uuid.v4().substring(0, 18);
-
-  const noemail = uniqueID + "@automate.com";
-  console.log(noemail);
+  const phone = route.params?.phone;
+  const userID = route.params?.user_id;
+  const db = getFirestore();
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your camera!");
+      alert("You've refused to allow this app to access your camera!");
       return;
     }
 
     const result = await ImagePicker.launchCameraAsync();
-
-    // console.log(result);
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
@@ -57,6 +48,25 @@ const RegisterScreen = ({ route, navigation }) => {
   const [email, setEmail] = useState("");
   const [idnumber, setIdnumber] = useState("");
 
+  //const userRef = collection(db, "users");
+  const handleOnSubmit = async () => {
+    try {
+      await setDoc(doc(db, "users", userID), {
+        city: city,
+        email: email,
+        extName: extensionname,
+        firstName: firstname,
+        homeAddress: homeaddress,
+        lastName: lastname,
+        license_id: idnumber,
+        middleName: middlename,
+        phoneNumber: phone,
+      });
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log("Error in handleOnSubmit:", error);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
