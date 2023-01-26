@@ -55,7 +55,7 @@ const RegisterScreen = ({ route, navigation }) => {
         middleName: middlename,
         phoneNumber: phone,
       });
-      navigation.navigate("Login");
+      navigation.navigate("VehicleRegister");
     } catch (error) {
       console.log("Error in handleOnSubmit:", error);
     }

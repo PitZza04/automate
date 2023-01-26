@@ -22,7 +22,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
-
+  const auth = getAuth();
   // const [verificationId, setVerificationId] = useState();
   // const handleSubmit = async () => {
   //   if (password !== password2) {
