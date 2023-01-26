@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     height: 14,
     width: 14,
     borderRadius: 7,
-    backgroundColor: "#000",
+    backgroundColor: "#DF3111",
   },
   radioButtonText: {
     fontSize: 14,

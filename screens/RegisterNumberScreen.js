@@ -62,7 +62,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logoWrapper}>
-        {/* <FirebaseRecaptchaVerifierModal
+          {/* <FirebaseRecaptchaVerifierModal
           ref={recaptchaVerifier}
           firebaseConfig={app}
           attemptInvisibleVerification={true}
@@ -97,6 +97,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
               maxLength={11}
             ></TextInput>
           </View>
+          <Text style={styles.label}>Available for all networks.</Text>
 
           <View style={[styles.inputWrapper, { marginTop: 10 }]}>
             <FontAwesome5
@@ -206,6 +207,13 @@ const styles = StyleSheet.create({
   inputText: {
     marginLeft: 10,
     width: "90%",
+  },
+  label: {
+    fontSize: 12,
+    alignSelf: "flex-start",
+    marginLeft: 25,
+    color: "#64615e",
+    opacity: 0.9,
   },
   nextWrapper: {
     justifyContent: "center",
