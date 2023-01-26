@@ -8,22 +8,16 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from "@react-native-firebase/app";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 import { app as db } from "../config/firebase";
+import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
-  const phone = route.params.phone;
-  const userID = route.params.user_id;
+  const phone = route.params?.phone;
+  const userID = route.params?.user_id;
+  const db = getFirestore();
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -48,19 +42,24 @@ const RegisterScreen = ({ route, navigation }) => {
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [idnumber, setIdnumber] = useState("");
-  const userRef = db.collection("users").doc(userID);
+  //const userRef = collection(db, "users");
   const handleOnSubmit = async () => {
-    await set(userRef, {
-      city: city,
-      email: email,
-      extName: extensionname,
-      firstName: firstname,
-      homeAddress: homeaddress,
-      lastName: lastname,
-      license_id: idnumber,
-      middleName: middlename,
-      phoneNumber: phone,
-    });
+    try {
+      await setDoc(doc(db, "users", userID), {
+        city: city,
+        email: email,
+        extName: extensionname,
+        firstName: firstname,
+        homeAddress: homeaddress,
+        lastName: lastname,
+        license_id: idnumber,
+        middleName: middlename,
+        phoneNumber: phone,
+      });
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log("Error in handleOnSubmit:", error);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
