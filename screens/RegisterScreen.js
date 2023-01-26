@@ -25,7 +25,6 @@ const RegisterScreen = ({ route, navigation }) => {
       alert("You've refused to allow this app to access your camera!");
       return;
     }
-
     const result = await ImagePicker.launchCameraAsync();
 
     if (!result.canceled) {
@@ -33,12 +32,6 @@ const RegisterScreen = ({ route, navigation }) => {
       console.log(result.assets);
     }
   };
-
-  const handleOnSubmit = async () => {
-    const userRef = collection(db, "users");
-    await addDoc(userRef, {});
-  };
-
   const [firstname, setFirstname] = useState("");
   const [middlename, setMiddlename] = useState("");
   const [lastname, setLastname] = useState("");

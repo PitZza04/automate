@@ -14,9 +14,6 @@ import { FontAwesome5, FontAwesome } from "react-native-vector-icons";
 import { PhoneAuthProvider } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-const RegisterNumberScreen = ({ navigation }) => {
-  const auth = getAuth();
-import { app } from "../firebase/firebase";
 const RegisterNumberScreen = ({ navigation, route }) => {
   const recaptchaVerifier = useRef(null);
   const [number, setNumber] = useState("");
