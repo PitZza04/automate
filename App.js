@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import StackNavigation from "./navigation/StackNavigation";
+import RootNavigation from "./navigation";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <RootNavigation />
+    </SafeAreaProvider>
   );
 }
 

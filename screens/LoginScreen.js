@@ -6,13 +6,13 @@ import {
   TextInput,
   Pressable,
   TouchableOpacity,
-  ScrollView,
   KeyboardAvoidingView,
   SafeAreaView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { async } from "@firebase/util";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,16 +28,14 @@ const LoginScreen = ({ navigation }) => {
   //   return unsubsribe;
   // }, []);
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Login with ", user.email);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("btn clicked");
+    } catch (error) {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>

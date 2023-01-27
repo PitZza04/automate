@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-import { app as db } from "../config/firebase";
+
 import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);

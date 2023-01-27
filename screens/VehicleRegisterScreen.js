@@ -10,26 +10,53 @@ import {
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-
-const RadioButton = ({ onPress, selected, children }) => {
-  return (
-    <View style={styles.radioButtonContainer}>
-      <TouchableOpacity onPress={onPress} style={styles.radioButton}>
-        {selected ? <View style={styles.radioButtonIcon} /> : null}
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onPress}>
-        <Text style={styles.radioButtonText}>{children}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import { getFirestore } from "firebase/firestore";
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
-  const [openCamera, setOpenCamera] = useState(null);
-  const [image, setImage] = useState(null);
+  const db = getFirestore();
 
-  console.log(route);
-
+  const handleOnSubmit = async () => {
+    //isLiked.selected;
+    // const { selected } = isLiked;
+    isLiked.map(({ selected, name }) => {
+      let fuel = "";
+      if (selected) {
+        console.log(name);
+        fuel = name;
+      }
+    });
+    try {
+      await setDoc(doc(db, "vehicle")),
+        {
+          planteNo: platenumber,
+          motorNo: enginenumber,
+          serialNo: serialnumber,
+          yearModel: yearmodel,
+          fuel: fuel,
+          vehicleImage: vehicleImage,
+        };
+    } catch {
+      console.log("Error in handleOnSubmit:", error);
+    }
+  };
+  // const handleOnSubmit = async () => {
+  //   try {
+  //     await setDoc(doc(db, "users", userID), {
+  //       city: city,
+  //       email: email,
+  //       extName: extensionname,
+  //       firstName: firstname,
+  //       homeAddress: homeaddress,
+  //       lastName: lastname,
+  //       license_id: idnumber,
+  //       middleName: middlename,
+  //       phoneNumber: phone,
+  //     });
+  //     navigation.navigate("VehicleRegister");
+  //   } catch (error) {
+  //     console.log("Error in handleOnSubmit:", error);
+  //   }
+  // };
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -39,8 +66,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
     }
 
     const result = await ImagePicker.launchCameraAsync();
-
-    // console.log(result);
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
@@ -52,10 +77,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const [enginenumber, setEnginenumber] = useState("");
   const [serialnumber, setSerialnumber] = useState("");
   const [yearmodel, setYearmodel] = useState("");
-  const [homeaddress, setHomeaddress] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
-  const [idnumber, setIdnumber] = useState("");
 
   const [isLiked, setIsLiked] = useState([
     { id: 1, value: true, name: "Petrol", selected: false },
@@ -68,6 +89,18 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
         : { ...isLikedItem, selected: false }
     );
     setIsLiked(updatedState);
+  };
+  const RadioButton = ({ onPress, selected, children }) => {
+    return (
+      <View style={styles.radioButtonContainer}>
+        <TouchableOpacity onPress={onPress} style={styles.radioButton}>
+          {selected ? <View style={styles.radioButtonIcon} /> : null}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+          <Text style={styles.radioButtonText}>{children}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
@@ -157,7 +190,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+              onPress={handleOnSubmit}
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>
