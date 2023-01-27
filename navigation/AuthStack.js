@@ -9,19 +9,23 @@ import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
 import HomeScreen from "../screens/HomeScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { AuthProvider } from "../hooks/useAuth";
 const Stack = createStackNavigator();
-const StackNavigation = () => {
+const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
-      {/*  */}
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name="Login"
-        component={LoginScreen}
-      />
-      {/* <Stack.Screen
+    <NavigationContainer>
+      <AuthProvider>
+        <Stack.Navigator>
+          {/*  */}
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+            name="Login"
+            component={LoginScreen}
+          />
+          {/* <Stack.Screen
         options={{
           headerShown: false,
         }}
@@ -97,15 +101,10 @@ const StackNavigation = () => {
           headerTintColor: "#fff",
         }}
       /> */}
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name="Home"
-        component={HomeScreen}
-      />
-    </Stack.Navigator>
+        </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 
-export default StackNavigation;
+export default AuthStack;
