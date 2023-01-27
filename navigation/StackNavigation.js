@@ -11,8 +11,8 @@ import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
-    <Stack.Navigator>
-      {/* initialRouteName="Register" */}
+    <Stack.Navigator initialRouteName="VehicleRegister">
+      {/*  */}
       <Stack.Screen
         options={{
           headerShown: false,

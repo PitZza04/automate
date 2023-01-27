@@ -23,21 +23,6 @@ const RegisterNumberScreen = ({ navigation, route }) => {
   const [passwordShown, setPasswordShown] = useState(true);
   const [passwordShown2, setPasswordShown2] = useState(true);
   const auth = getAuth();
-  // const [verificationId, setVerificationId] = useState();
-  // const handleSubmit = async () => {
-  //   if (password !== password2) {
-  //     Alert.alert("Passwords do not match!");
-  //   } else {
-  //     // submit password
-  //     await sendVerification();
-  //     navigation.navigate("OTPScreen", {
-  //       phoneNumber: number,
-  //       password: password,
-  //       message: message,
-  //       verificationId: verificationId,
-  //     });
-  //   }
-  // };
 
   const handleSignUp = () => {
     const email = number + "@automate.com";
