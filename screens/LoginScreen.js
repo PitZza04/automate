@@ -30,9 +30,8 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Login with ", user.email);
+      .then(() => {
+        navigation.navigate("Home");
       })
       .catch((error) => {
         const errorMessage = error.message;

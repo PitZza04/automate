@@ -8,10 +8,11 @@ import OTPScreen from "../screens/OTPScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
+import HomeScreen from "../screens/HomeScreen";
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName="VehicleRegister">
+    <Stack.Navigator initialRouteName="Login">
       {/*  */}
       <Stack.Screen
         options={{
@@ -20,7 +21,7 @@ const StackNavigation = () => {
         name="Login"
         component={LoginScreen}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           headerShown: false,
         }}
@@ -95,6 +96,13 @@ const StackNavigation = () => {
           },
           headerTintColor: "#fff",
         }}
+      /> */}
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Home"
+        component={HomeScreen}
       />
     </Stack.Navigator>
   );

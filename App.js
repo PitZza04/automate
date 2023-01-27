@@ -1,11 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigation from "./navigation/StackNavigation";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthProvider } from "./hooks/useAuth";
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <AuthProvider>
+          <StackNavigation />
+        </AuthProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
