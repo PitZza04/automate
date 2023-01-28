@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { async } from "@firebase/util";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -36,6 +36,9 @@ const LoginScreen = ({ navigation }) => {
       const errorMessage = error.message;
       console.log(errorMessage);
     }
+  };
+  const handleLogout = async () => {
+    signOut(auth);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -116,6 +119,14 @@ const LoginScreen = ({ navigation }) => {
             >
               <View style={styles.loginButton}>
                 <Text style={styles.textLogin}>LOGIN</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={{ marginBottom: 10 }}
+            >
+              <View style={styles.loginButton}>
+                <Text style={styles.textLogin}>Logout</Text>
               </View>
             </TouchableOpacity>
             <View style={styles.registerLink}>
