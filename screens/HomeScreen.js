@@ -1,17 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
-import { useAuth } from "../hooks/useAuth";
+import React, { useContext } from "react";
 import { signOut, getAuth } from "@firebase/auth";
+
+import useAuth from "../hooks/useAuth";
+
 const HomeScreen = () => {
+  const { dispatch, user } = useAuth();
   const auth = getAuth();
-  const { user } = useAuth();
 
   const handleLogout = async () => {
     signOut(auth);
+    dispatch({ type: "SIGN_OUT" });
   };
 
   return (
     <View style={styles.container}>
+      <Text>{user.email}</Text>
       <Text>HomeScreen</Text>
       <TouchableOpacity onPress={handleLogout} style={{ marginBottom: 10 }}>
         <View style={styles.loginButton}>

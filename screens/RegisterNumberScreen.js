@@ -25,22 +25,23 @@ const RegisterNumberScreen = ({ navigation, route }) => {
   const auth = getAuth();
 
   const handleSignUp = () => {
-    const email = number + "@automate.com";
+    // const email = number + "@automate.com";
 
     if (password === confirmPassword) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in`
-          const user = userCredential.user;
-          navigation.navigate("Register", {
-            user_id: user.uid,
-            phone: number,
-          });
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          console.log(errorMessage);
-        });
+      navigation.navigate("Register", {
+        phone: number,
+        password: password,
+      });
+      // createUserWithEmailAndPassword(auth, email, password)
+      //   .then((userCredential) => {
+      //     // Signed in`
+      //     const user = userCredential.user;
+
+      //   })
+      //   .catch((error) => {
+      //     const errorMessage = error.message;
+      //     console.log(errorMessage);
+      //   });
     }
   };
   const sendVerification = async () => {
@@ -92,7 +93,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
             <TextInput
               style={styles.inputText}
               value={number}
-              onChangeText={setNumber}
+              onChangeText={(e) => setNumber(e)}
               placeholder="Enter your Mobile Number"
               name="MobileNum"
               returnKeyType="send"
@@ -114,7 +115,7 @@ const RegisterNumberScreen = ({ navigation, route }) => {
             <TextInput
               style={styles.inputText}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(e) => setPassword(e)}
               placeholder="Password"
               name="Password"
               secureTextEntry={passwordShown}

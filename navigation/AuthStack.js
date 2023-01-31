@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="RegisterNumber">
         {/*  */}
         <Stack.Screen
           options={{
@@ -24,7 +24,7 @@ export default function AuthStack() {
           name="Login"
           component={LoginScreen}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{
             headerShown: false,
           }}
@@ -99,7 +99,7 @@ export default function AuthStack() {
             },
             headerTintColor: "#fff",
           }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

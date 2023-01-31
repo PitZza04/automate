@@ -10,14 +10,16 @@ import {
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
+import useAuth from "../hooks/useAuth";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
-  const phone = route.params?.phone;
-  const userID = route.params?.user_id;
+  let phone = route.params?.phone;
+  const password = route.params?.password;
   const db = getFirestore();
+  const auth = getAuth();
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -32,34 +34,70 @@ const RegisterScreen = ({ route, navigation }) => {
       console.log(result.assets);
     }
   };
-  const [firstname, setFirstname] = useState("");
-  const [middlename, setMiddlename] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [extensionname, setExtensionname] = useState("");
-  const [homeaddress, setHomeaddress] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [extName, setExtName] = useState("");
+  const [homeAddress, setHomeAddress] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
-  const [idnumber, setIdnumber] = useState("");
+  const [licenseID, setLicenseID] = useState("");
 
-  //const userRef = collection(db, "users");
   const handleOnSubmit = async () => {
     try {
-      await setDoc(doc(db, "users", userID), {
-        city: city,
-        email: email,
-        extName: extensionname,
-        firstName: firstname,
-        homeAddress: homeaddress,
-        lastName: lastname,
-        license_id: idnumber,
-        middleName: middlename,
-        phoneNumber: phone,
+      phone = `${phone}@automate.com`;
+      const cred = await createUserWithEmailAndPassword(auth, phone, password);
+      const { uid } = cred.user;
+      await setDoc(doc(db, "users", uid), {
+        city,
+        email,
+        extName,
+        firstName,
+        middleName,
+        lastName,
+        homeAddress,
+        licenseID,
+        phone,
       });
-      navigation.navigate("VehicleRegister");
+      navigation.navigate("VehicleRegister", {
+        uid,
+      });
     } catch (error) {
-      console.log("Error in handleOnSubmit:", error);
+      console.error(error);
+      console.log(firstName);
     }
   };
+  // const handleOnSubmit = () => {
+  //   console.log(phone);
+  //   phone = phone + "@automate.com";
+  //   createUserWithEmailAndPassword(auth, phone, password)
+  //     .then((cred) => {
+  //       const { uid } = cred.user;
+  //       return setDoc(doc(db, "users", uid), {
+  //         city: city,
+  //         email: email,
+  //         extName: extensionname,
+  //         firstName: firstname,
+  //         homeAddress: homeaddress,
+  //         lastName: lastname,
+  //         license_id: idnumber,
+  //         middleName: middlename,
+  //         phoneNumber: phone,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       console.log(firstname);
+  //     });
+
+  // }; // console.log(userID);
+  // try {
+  //   navigation.navigate("VehicleRegister");
+  // } catch (error) {
+  //   console.log("Error in handleOnSubmit:", error);
+  // // }
+  // console.log(user);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -68,8 +106,8 @@ const RegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>First Name: </Text>
             <TextInput
               style={styles.inputText}
-              value={firstname}
-              onChangeText={setFirstname}
+              value={firstName}
+              onChangeText={setFirstName}
               name="FirstName"
               returnKeyType="send"
               autoCorrect={false}
@@ -82,8 +120,8 @@ const RegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Middle Name:</Text>
             <TextInput
               style={styles.inputText}
-              value={middlename}
-              onChangeText={setMiddlename}
+              value={middleName}
+              onChangeText={setMiddleName}
               name="MiddleName"
               returnKeyType="send"
               autoCorrect={false}
@@ -96,8 +134,8 @@ const RegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Last Name:</Text>
             <TextInput
               style={styles.inputText}
-              value={lastname}
-              onChangeText={setLastname}
+              value={lastName}
+              onChangeText={setLastName}
               name="MiddleName"
               returnKeyType="send"
               autoCorrect={false}
@@ -109,15 +147,13 @@ const RegisterScreen = ({ route, navigation }) => {
           <View style={styles.pickerWrapper}>
             <Text style={styles.label}>Extension Name:</Text>
             <Picker
-              selectedValue={extensionname}
+              selectedValue={extName}
               style={{
                 height: 30,
                 width: 150,
                 backgroundColor: "#ecf2f8",
               }}
-              onValueChange={(itemValue, itemIndex) =>
-                setExtensionname(itemValue)
-              }
+              onValueChange={(itemValue, itemIndex) => setExtName(itemValue)}
             >
               <Picker.Item label="-None-" value="" />
               <Picker.Item label="Jr." value="Junior" />
@@ -129,8 +165,8 @@ const RegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Home Address:</Text>
             <TextInput
               style={styles.inputText}
-              value={homeaddress}
-              onChangeText={setHomeaddress}
+              value={homeAddress}
+              onChangeText={setHomeAddress}
               name="HomeAddress"
               returnKeyType="send"
               autoCorrect={false}
@@ -177,8 +213,8 @@ const RegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Number of License ID:</Text>
             <TextInput
               style={styles.inputText}
-              value={idnumber}
-              onChangeText={setIdnumber}
+              value={licenseID}
+              onChangeText={setLicenseID}
               name="IdNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -202,7 +238,7 @@ const RegisterScreen = ({ route, navigation }) => {
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>NEXT</Text>
+                <Text style={styles.buttonLabel}>SUBMIT</Text>
               </View>
             </TouchableOpacity>
           </View>
