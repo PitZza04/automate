@@ -9,37 +9,28 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { async } from "@firebase/util";
+
+import useAuth from "../hooks/useAuth";
 const LoginScreen = ({ navigation }) => {
+  const { dispatch } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
   const auth = getAuth();
-  // useEffect(() => {
-  //   const unsubsribe = auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       navigation.navigate("Register");
-  //     }
-  //   });
-
-  //   return unsubsribe;
-  // }, []);
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("btn clicked");
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      dispatch({ type: "SIGN_IN", payload: result.user });
     } catch (error) {
       const errorMessage = error.message;
       console.log(errorMessage);
     }
   };
-  const handleLogout = async () => {
-    signOut(auth);
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
@@ -119,14 +110,6 @@ const LoginScreen = ({ navigation }) => {
             >
               <View style={styles.loginButton}>
                 <Text style={styles.textLogin}>LOGIN</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleLogout}
-              style={{ marginBottom: 10 }}
-            >
-              <View style={styles.loginButton}>
-                <Text style={styles.textLogin}>Logout</Text>
               </View>
             </TouchableOpacity>
             <View style={styles.registerLink}>

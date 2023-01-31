@@ -14,7 +14,7 @@ import { getFirestore } from "firebase/firestore";
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
   const db = getFirestore();
-
+  console.log(route);
   const handleOnSubmit = async () => {
     //isLiked.selected;
     // const { selected } = isLiked;
