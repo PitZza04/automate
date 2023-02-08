@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Picker } from "@react-native-picker/picker";
+import Data from "../data/brands";
 import { getFirestore } from "firebase/firestore";
+
+const boxWidth = Dimensions.get("window").width / 4 - 17;
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
   const db = getFirestore();
@@ -174,6 +177,19 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
                 {item.name}
               </RadioButton>
             ))}
+          </View>
+
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Brand")}
+              style={{ marginBottom: 5 }}
+            >
+              <View style={styles.buttonStyle}>
+                <Text style={styles.buttonLabel}>
+                  Select Vehicle Brand and Model
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.buttonWrapper}>
