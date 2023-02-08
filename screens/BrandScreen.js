@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { db } from "../config/firebase";
 const windowHeight = Dimensions.get("window").height;
 const boxWidth = Dimensions.get("window").width / 4 - 17;
-import brands from "../data/brands";
+//import brands from "../data/brands";
 
 import ListItem from "../components/ListItem";
 
-const BrandScreen = ({ navigation }) => (
-  <View style={styles.container}>
-    <View style={styles.vehicleWrapper}>
-      {brands.map(({ id, brand, models, img }) => (
-        <ListItem key={id} id={id} name={brand} models={models} img={img} />
-      ))}
+const BrandScreen = ({ navigation }) => {
+  const [listBrand, setListBrand] = useState([]);
+  useEffect(() => {
+    const q = query(collection(db, "brand"), orderBy("make", "asc"));
+    onSnapshot(q, (querySnapshot) => {
+      setListBrand(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.vehicleWrapper}>
+        {listBrand.map((brand) => (
+          <ListItem
+            key={brand?.id}
+            id={brand?.id}
+            isBrand={true}
+            name={brand?.data?.make}
+            img={brand?.data?.img_url}
+          />
+        ))}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default BrandScreen;
 

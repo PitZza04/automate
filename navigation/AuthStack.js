@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="VehicleRegister">
         {/*  */}
         <Stack.Screen
           options={{
@@ -67,7 +67,7 @@ export default function AuthStack() {
             component={VehicleRegisterScreen}
           />
           <Stack.Screen
-            options={{ presentation: "modal" }}
+            options={{ presentation: "modal", title: "Select Brand" }}
             name="Brand"
             component={BrandScreen}
           ></Stack.Screen>

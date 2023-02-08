@@ -11,13 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 import brands from "../data/brands";
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
-const ListItem = ({ id, models, name, brandID, img }) => {
+const ListItem = ({ id, name, isBrand, img }) => {
   const navigation = useNavigation();
   const handleBrand = () => {
     navigation.navigate("Model", {
       id: id,
       brand: name,
-      models: models,
       img: img,
     });
   };
@@ -33,14 +32,14 @@ const ListItem = ({ id, models, name, brandID, img }) => {
   return (
     <>
       <TouchableOpacity
-        onPress={brandID ? () => handleModel(brandID, id) : handleBrand}
+        onPress={isBrand ? handleBrand : () => handleModel(brandID, id)}
       >
         <View style={[styles.boxWrapper, styles.shadowStyle]}>
           <View style={styles.brandWrapper}>
             <View style={styles.imageWrapper}>
               <Image
                 style={{ height: 70, width: 70, resizeMode: "contain" }}
-                source={img}
+                source={{ uri: img }}
               />
             </View>
             <Text style={styles.brand}>{name}</Text>

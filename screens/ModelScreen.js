@@ -15,9 +15,9 @@ const ModelScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.vehicleWrapper}>
-        {models.map(({ id, name, img }) => (
-          <ListItem key={id} id={id} name={name} brandID={brandID} img={img} />
-        ))}
+        {/* {models.map(({ id, name, img }) => (
+          <ListItem key={id} id={id} name={name} isBrand={false} img={img} />
+        ))} */}
       </View>
     </View>
   );
