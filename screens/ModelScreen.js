@@ -4,7 +4,7 @@ import { getModelList } from "../config/firestore";
 import ListItem from "../components/ListItem";
 
 const ModelScreen = ({ route, navigation }) => {
-  const { brand_id, brand } = route.params;
+  const { brand_id, brandName } = route.params;
   const [listModel, setListModel] = useState([]);
   useEffect(() => {
     const fetchModelList = async () => {
@@ -21,10 +21,11 @@ const ModelScreen = ({ route, navigation }) => {
             <ListItem
               key={id}
               id={id}
-              name={name}
+              modelName={name}
               isBrand={false}
               img={img_url}
               brand_id={brand_id}
+              brandName={brandName}
             />
           ))}
         </View>

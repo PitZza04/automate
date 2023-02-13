@@ -10,54 +10,41 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import Data from "../data/brands";
-import { getFirestore } from "firebase/firestore";
+import { addVehicle } from "../config/firestore";
 
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
-  const db = getFirestore();
-  console.log(route);
+  const { id, brandId, modelId, brandName, modelName } = route?.params;
+  const [plateNo, setPlateNo] = useState("");
+  const [engineNo, setEngineNo] = useState("");
+  const [serialNo, setSerialNo] = useState("");
+  const [yearModel, setYearModel] = useState("");
+
+  console.log(route.params);
   const handleOnSubmit = async () => {
+    let fuelType = "";
     isLiked.map(({ selected, name }) => {
-      let fuel = "";
       if (selected) {
         console.log(name);
-        fuel = name;
+        fuelType = name;
       }
     });
-    try {
-      await setDoc(doc(db, "vehicle")),
-        {
-          planteNo: platenumber,
-          motorNo: enginenumber,
-          serialNo: serialnumber,
-          yearModel: yearmodel,
-          fuel: fuel,
-          vehicleImage: vehicleImage,
-        };
-    } catch {
-      console.log("Error in handleOnSubmit:", error);
-    }
+    addVehicle({
+      uid: "YJIMKxy3LUWcrLKtAgp1uTxOhR03",
+      vehicleDetail: {
+        modelId,
+        brandId,
+        plateNo,
+        serialNo,
+        brandName,
+        modelName,
+      },
+      yearModel,
+      fuelType,
+    });
   };
-  // const handleOnSubmit = async () => {
-  //   try {
-  //     await setDoc(doc(db, "users", userID), {
-  //       city: city,
-  //       email: email,
-  //       extName: extensionname,
-  //       firstName: firstname,
-  //       homeAddress: homeaddress,
-  //       lastName: lastname,
-  //       license_id: idnumber,
-  //       middleName: middlename,
-  //       phoneNumber: phone,
-  //     });
-  //     navigation.navigate("VehicleRegister");
-  //   } catch (error) {
-  //     console.log("Error in handleOnSubmit:", error);
-  //   }
-  // };
+
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -73,11 +60,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
       console.log(result.assets);
     }
   };
-
-  const [platenumber, setPlatenumber] = useState("");
-  const [enginenumber, setEnginenumber] = useState("");
-  const [serialnumber, setSerialnumber] = useState("");
-  const [yearmodel, setYearmodel] = useState("");
 
   const [isLiked, setIsLiked] = useState([
     { id: 1, value: true, name: "Petrol", selected: false },
@@ -112,8 +94,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Plate No: </Text>
             <TextInput
               style={styles.inputText}
-              value={platenumber}
-              onChangeText={setPlatenumber}
+              value={plateNo}
+              onChangeText={setPlateNo}
               name="PlateNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -126,8 +108,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Motor / Engine No:</Text>
             <TextInput
               style={styles.inputText}
-              value={enginenumber}
-              onChangeText={setEnginenumber}
+              value={engineNo}
+              onChangeText={setEngineNo}
               name="EngineNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -140,8 +122,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Serial / Chassis No:</Text>
             <TextInput
               style={styles.inputText}
-              value={serialnumber}
-              onChangeText={setSerialnumber}
+              value={serialNo}
+              onChangeText={setSerialNo}
               name="SerialNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -154,8 +136,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Year Model:</Text>
             <TextInput
               style={styles.inputText}
-              value={yearmodel}
-              onChangeText={setYearmodel}
+              value={yearModel}
+              onChangeText={setYearModel}
               name="YearModel"
               returnKeyType="send"
               autoCorrect={false}

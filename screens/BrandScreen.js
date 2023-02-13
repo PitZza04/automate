@@ -28,7 +28,7 @@ const BrandScreen = ({ navigation }) => {
             key={brand?.id}
             id={brand?.id}
             isBrand={true}
-            name={brand?.data?.make}
+            brandName={brand?.data?.make}
             img={brand?.data?.img_url}
           />
         ))}

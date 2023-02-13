@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="VehicleRegister">
+      <Stack.Navigator initialRouteName="Register">
         {/*  */}
         <Stack.Screen
           options={{

@@ -4,9 +4,12 @@ import {
   onSnapshot,
   doc,
   setDoc,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { getDownloadURL } from "./storage";
+
+const VEHICLE_COLLECTION = "vehicle";
 
 export const getModelList = async (brand_id) => {
   const modelsRef = collection(db, "brand", brand_id, "model");
@@ -21,4 +24,12 @@ export const getModelList = async (brand_id) => {
     });
   }
   return allModels;
+};
+
+export const addVehicle = async (...props) => {
+  try {
+    await addDoc(collection(db, VEHICLE_COLLECTION), ...props);
+  } catch (error) {
+    console.log(error);
+  }
 };
