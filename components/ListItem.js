@@ -6,33 +6,48 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+
+import { storage } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
-import brands from "../data/brands";
+import { ref, getDownloadURL } from "firebase/storage";
+
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
-const ListItem = ({ id, name, isBrand, img }) => {
+const ListItem = ({ id, name, isBrand, img, brand_id }) => {
   const navigation = useNavigation();
-  const handleBrand = () => {
+  const handleBrand = async (id, name) => {
     navigation.navigate("Model", {
-      id: id,
+      brand_id: id,
       brand: name,
-      img: img,
     });
   };
   const handleModel = (brandID, id) => {
-    console.log(id);
-    console.log(brandID);
-    const data = brands[brandID - 1].brand;
-    const data2 = brands[brandID - 1].models[id - 1].name;
-    // console.log(data);
-    // console.log(data2);
+    navigation.navigate("VehicleRegister", {
+      modelId: id,
+      brandId: brandID,
+    });
+    console.log(`model ID: ${id}`);
+    console.log(`Brand ID: ${brandID}`);
   };
-
+  const handleImage = (uri) => {
+    const gsReference = ref(storage, uri);
+    getDownloadURL(gsReference)
+      .then((url) => {
+        return url;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <TouchableOpacity
-        onPress={isBrand ? handleBrand : () => handleModel(brandID, id)}
+        onPress={
+          isBrand
+            ? () => handleBrand(id, name)
+            : () => handleModel(brand_id, id)
+        }
       >
         <View style={[styles.boxWrapper, styles.shadowStyle]}>
           <View style={styles.brandWrapper}>

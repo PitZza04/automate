@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../config/firebase";
-const windowHeight = Dimensions.get("window").height;
-const boxWidth = Dimensions.get("window").width / 4 - 17;
-//import brands from "../data/brands";
 
 import ListItem from "../components/ListItem";
 
@@ -20,7 +17,8 @@ const BrandScreen = ({ navigation }) => {
         }))
       );
     });
-  });
+    console.log("run at once");
+  }, []);
 
   return (
     <View style={styles.container}>

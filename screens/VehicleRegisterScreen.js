@@ -19,8 +19,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const db = getFirestore();
   console.log(route);
   const handleOnSubmit = async () => {
-    //isLiked.selected;
-    // const { selected } = isLiked;
     isLiked.map(({ selected, name }) => {
       let fuel = "";
       if (selected) {

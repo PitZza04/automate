@@ -1,24 +1,34 @@
-import React from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
-const windowHeight = Dimensions.get("window").height;
-const boxWidth = Dimensions.get("window").width / 4 - 17;
-import brands from "../data/brands";
-
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { getModelList } from "../config/firestore";
 import ListItem from "../components/ListItem";
 
 const ModelScreen = ({ route, navigation }) => {
-  const { models, id } = route.params;
-  const brandID = id;
-  console.log(brandID);
-  console.log(models);
+  const { brand_id, brand } = route.params;
+  const [listModel, setListModel] = useState([]);
+  useEffect(() => {
+    const fetchModelList = async () => {
+      setListModel(await getModelList(brand_id));
+    };
+    fetchModelList();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.vehicleWrapper}>
-        {/* {models.map(({ id, name, img }) => (
-          <ListItem key={id} id={id} name={name} isBrand={false} img={img} />
-        ))} */}
-      </View>
+      <ScrollView>
+        <View style={styles.vehicleWrapper}>
+          {listModel?.map(({ id, name, img_url }) => (
+            <ListItem
+              key={id}
+              id={id}
+              name={name}
+              isBrand={false}
+              img={img_url}
+              brand_id={brand_id}
+            />
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
