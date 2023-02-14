@@ -4,6 +4,8 @@ import {
   onSnapshot,
   doc,
   setDoc,
+  query,
+  orderBy,
   addDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
@@ -12,7 +14,10 @@ import { getDownloadURL } from "./storage";
 const VEHICLE_COLLECTION = "vehicle";
 
 export const getModelList = async (brand_id) => {
-  const modelsRef = collection(db, "brand", brand_id, "model");
+  const modelsRef = query(
+    collection(db, "brand", brand_id, "model"),
+    orderBy("name", "asc")
+  );
   const snapshot = await getDocs(modelsRef);
   let allModels = [];
   for (const documentSnapshot of snapshot.docs) {

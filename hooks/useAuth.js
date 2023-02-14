@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         dispatch({ type: "SIGN_IN" });
       } else {
-        // User is signed out
         dispatch({ type: "SIGN_OUT" });
       }
     });

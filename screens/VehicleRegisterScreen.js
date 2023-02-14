@@ -30,7 +30,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
         fuelType = name;
       }
     });
-    addVehicle({
+    await addVehicle({
       uid: "YJIMKxy3LUWcrLKtAgp1uTxOhR03",
       vehicleDetail: {
         modelId,

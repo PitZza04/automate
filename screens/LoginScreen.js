@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import useAuth from "../hooks/useAuth";
 const LoginScreen = ({ navigation }) => {
