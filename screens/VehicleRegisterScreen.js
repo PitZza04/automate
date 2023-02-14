@@ -7,10 +7,12 @@ import {
   ScrollView,
   SafeAreaView,
   Dimensions,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { addVehicle } from "../config/firestore";
+import { uploadImage } from "../config/storage";
 
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
@@ -20,10 +22,13 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const [engineNo, setEngineNo] = useState("");
   const [serialNo, setSerialNo] = useState("");
   const [yearModel, setYearModel] = useState("");
-
+  const [openCamera, setOpenCamera] = useState(null);
   console.log(route.params);
   const handleOnSubmit = async () => {
     let fuelType = "";
+    const uid = "YJIMKxy3LUWcrLKtAgp1uTxOhR03";
+    const imageUri = openCamera;
+    //let fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
     isLiked.map(({ selected, name }) => {
       if (selected) {
         console.log(name);
@@ -31,7 +36,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
       }
     });
     await addVehicle({
-      uid: "YJIMKxy3LUWcrLKtAgp1uTxOhR03",
+      uid: uid,
       vehicleDetail: {
         modelId,
         brandId,
@@ -40,6 +45,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
         brandName,
         modelName,
       },
+      img_url: await uploadImage(imageUri, uid),
       yearModel,
       fuelType,
     });
@@ -57,7 +63,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
-      console.log(result.assets);
     }
   };
 
@@ -207,10 +212,10 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           </View>
 
           {/* <View style={styles.imageContainer}>
-              {openCamera !== "" && (
-                <Image source={{ uri: openCamera }} style={styles.image} />
-              )}
-            </View> */}
+            {openCamera !== "" && (
+              <Image source={{ uri: openCamera }} style={styles.image} />
+            )}
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
