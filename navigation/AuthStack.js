@@ -7,7 +7,8 @@ import OTPScreen from "../screens/OTPScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
-import HomeScreen from "../screens/HomeScreen";
+import BrandScreen from "../screens/BrandScreen";
+import ModelScreen from "../screens/ModelScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -15,7 +16,7 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="RegisterNumber">
+      <Stack.Navigator initialRouteName="Register">
         {/*  */}
         <Stack.Screen
           options={{
@@ -48,23 +49,35 @@ export default function AuthStack() {
           name="Register"
           component={RegisterScreen}
         />
+        <Stack.Group>
+          <Stack.Screen
+            options={{
+              title: "VEHICLE REGISTER",
+              headerStyle: {
+                backgroundColor: "#DF3111",
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "500",
+                fontSize: 18,
+              },
+            }}
+            name="VehicleRegister"
+            component={VehicleRegisterScreen}
+          />
+          <Stack.Screen
+            options={{ presentation: "modal", title: "Select Brand" }}
+            name="Brand"
+            component={BrandScreen}
+          ></Stack.Screen>
 
-        <Stack.Screen
-          options={{
-            title: "VEHICLE REGISTER",
-            headerStyle: {
-              backgroundColor: "#DF3111",
-            },
-            headerTitleAlign: "center",
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "500",
-              fontSize: 18,
-            },
-          }}
-          name="VehicleRegister"
-          component={VehicleRegisterScreen}
-        />
+          <Stack.Screen
+            options={{ presentation: "modal" }}
+            name="Model"
+            component={ModelScreen}
+          ></Stack.Screen>
+        </Stack.Group>
 
         <Stack.Screen
           name="ResetPassword"

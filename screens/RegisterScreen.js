@@ -44,28 +44,28 @@ const RegisterScreen = ({ route, navigation }) => {
   const [licenseID, setLicenseID] = useState("");
 
   const handleOnSubmit = async () => {
-    try {
-      phone = `${phone}@automate.com`;
-      const cred = await createUserWithEmailAndPassword(auth, phone, password);
-      const { uid } = cred.user;
-      await setDoc(doc(db, "users", uid), {
-        city,
-        email,
-        extName,
-        firstName,
-        middleName,
-        lastName,
-        homeAddress,
-        licenseID,
-        phone,
-      });
-      navigation.navigate("VehicleRegister", {
-        uid,
-      });
-    } catch (error) {
-      console.error(error);
-      console.log(firstName);
-    }
+    // try {
+    //   phone = `${phone}@automate.com`;
+    //   const cred = await createUserWithEmailAndPassword(auth, phone, password);
+    //   const { uid } = cred.user;
+    //   await setDoc(doc(db, "users", uid), {
+    //     city,
+    //     email,
+    //     extName,
+    //     firstName,
+    //     middleName,
+    //     lastName,
+    //     homeAddress,
+    //     licenseID,
+    //     phone,
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    //   console.log(firstName);
+    // }
+    navigation.navigate("VehicleRegister", {
+      uid: "1",
+    });
   };
   // const handleOnSubmit = () => {
   //   console.log(phone);
@@ -238,7 +238,7 @@ const RegisterScreen = ({ route, navigation }) => {
               style={{ marginBottom: 5 }}
             >
               <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>SUBMIT</Text>
+                <Text style={styles.buttonLabel}>NEXT</Text>
               </View>
             </TouchableOpacity>
           </View>

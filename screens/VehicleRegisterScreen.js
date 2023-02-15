@@ -6,57 +6,53 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Dimensions,
+  Pressable,
+  Image,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Picker } from "@react-native-picker/picker";
-import { getFirestore } from "firebase/firestore";
+import { addVehicle } from "../config/firestore";
+import { uploadImage } from "../config/storage";
+import { MaterialIcons } from "react-native-vector-icons";
+
+const boxWidth = Dimensions.get("window").width / 4 - 17;
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
-  const db = getFirestore();
-  console.log(route);
+  const { id, brandId, modelId, brandName, modelName } = route?.params;
+  const [plateNo, setPlateNo] = useState("");
+  const [engineNo, setEngineNo] = useState("");
+  const [serialNo, setSerialNo] = useState("");
+  const [yearModel, setYearModel] = useState("");
+  const [openCamera, setOpenCamera] = useState(null);
+  console.log(route.params);
   const handleOnSubmit = async () => {
-    //isLiked.selected;
-    // const { selected } = isLiked;
+    let fuelType = "";
+    const uid = "YJIMKxy3LUWcrLKtAgp1uTxOhR03";
+    const imageUri = openCamera;
+    //let fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
     isLiked.map(({ selected, name }) => {
-      let fuel = "";
       if (selected) {
         console.log(name);
-        fuel = name;
+        fuelType = name;
       }
     });
-    try {
-      await setDoc(doc(db, "vehicle")),
-        {
-          planteNo: platenumber,
-          motorNo: enginenumber,
-          serialNo: serialnumber,
-          yearModel: yearmodel,
-          fuel: fuel,
-          vehicleImage: vehicleImage,
-        };
-    } catch {
-      console.log("Error in handleOnSubmit:", error);
-    }
+    await addVehicle({
+      uid: uid,
+      vehicleDetail: {
+        modelId,
+        brandId,
+        plateNo,
+        serialNo,
+        brandName,
+        modelName,
+      },
+      img_url: await uploadImage(imageUri, uid),
+      yearModel,
+      fuelType,
+    });
   };
-  // const handleOnSubmit = async () => {
-  //   try {
-  //     await setDoc(doc(db, "users", userID), {
-  //       city: city,
-  //       email: email,
-  //       extName: extensionname,
-  //       firstName: firstname,
-  //       homeAddress: homeaddress,
-  //       lastName: lastname,
-  //       license_id: idnumber,
-  //       middleName: middlename,
-  //       phoneNumber: phone,
-  //     });
-  //     navigation.navigate("VehicleRegister");
-  //   } catch (error) {
-  //     console.log("Error in handleOnSubmit:", error);
-  //   }
-  // };
+
   const camera = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -69,14 +65,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
-      console.log(result.assets);
     }
   };
-
-  const [platenumber, setPlatenumber] = useState("");
-  const [enginenumber, setEnginenumber] = useState("");
-  const [serialnumber, setSerialnumber] = useState("");
-  const [yearmodel, setYearmodel] = useState("");
 
   const [isLiked, setIsLiked] = useState([
     { id: 1, value: true, name: "Petrol", selected: false },
@@ -111,8 +101,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Plate No: </Text>
             <TextInput
               style={styles.inputText}
-              value={platenumber}
-              onChangeText={setPlatenumber}
+              value={plateNo}
+              onChangeText={(prev) => setPlateNo(prev)}
               name="PlateNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -125,8 +115,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Motor / Engine No:</Text>
             <TextInput
               style={styles.inputText}
-              value={enginenumber}
-              onChangeText={setEnginenumber}
+              value={engineNo}
+              onChangeText={setEngineNo}
               name="EngineNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -139,8 +129,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Serial / Chassis No:</Text>
             <TextInput
               style={styles.inputText}
-              value={serialnumber}
-              onChangeText={setSerialnumber}
+              value={serialNo}
+              onChangeText={setSerialNo}
               name="SerialNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -153,8 +143,8 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Year Model:</Text>
             <TextInput
               style={styles.inputText}
-              value={yearmodel}
-              onChangeText={setYearmodel}
+              value={yearModel}
+              onChangeText={setYearModel}
               name="YearModel"
               returnKeyType="send"
               autoCorrect={false}
@@ -178,43 +168,80 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={camera}
-              style={{ marginTop: 5, marginBottom: 5 }}
+              onPress={() => navigation.navigate("Brand")}
+              style={{}}
             >
-              <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>
-                  Vehicle Registration photo Upload
+              <View style={[styles.buttonStyle, styles.buttonGray]}>
+                <Text style={styles.buttonText}>
+                  Select Vehicle Brand and Model
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={camera} style={{}}>
+              <View style={[styles.buttonStyle, styles.buttonGray]}>
+                <Text style={styles.buttonText}>
+                  Vehicle Registration Photo Upload
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.optional}>
+            <Text style={{ color: "#D31111" }}>Optional:</Text>
+          </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={handleOnSubmit}
-              style={{ marginBottom: 5 }}
+              onPress={() => console.log("clicked add vehicle")}
+              style={{ marginBottom: 20 }}
             >
+              <View style={[styles.buttonStyle, styles.buttonGray, {}]}>
+                <MaterialIcons
+                  name="add-circle"
+                  size={27}
+                  style={styles.addIcon}
+                />
+                <Text style={styles.buttonText}>Add Another Vehicle</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+              <View style={styles.transparentBtn}>
+                <Text style={{ color: "#DF3111" }}>Skip For Now</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={handleOnSubmit}>
               <View style={styles.buttonStyle}>
                 <Text style={styles.buttonLabel}>Submit</Text>
               </View>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
-              style={{ marginBottom: 5 }}
-            >
-              <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>Skip For Now</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.tos}>
+              <Text style={styles.text}>By continuing you agree to </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterNumber")}
+              >
+                <Text style={styles.linkText}>Terms and Service </Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>and </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterNumber")}
+              >
+                <Text style={styles.linkText}>Privacy Policy </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* <View style={styles.imageContainer}>
-              {openCamera !== "" && (
-                <Image source={{ uri: openCamera }} style={styles.image} />
-              )}
-            </View> */}
+            {openCamera !== "" && (
+              <Image source={{ uri: openCamera }} style={styles.image} />
+            )}
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -250,6 +277,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20,
   },
+  optional: {
+    marginTop: 30,
+    marginBottom: 2,
+    marginLeft: 20,
+  },
   radioButtonContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -280,18 +312,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonStyle: {
-    marginVertical: 10,
-    backgroundColor: "#DF3111",
+  transparentBtn: {
+    borderWidth: 1,
+    borderColor: "#DF3111",
+    marginVertical: 5,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: 325,
+    width: 300,
     borderRadius: 10,
     padding: 5,
     height: 40,
   },
+  buttonStyle: {
+    marginVertical: 5,
+    flexDirection: "row",
+    backgroundColor: "#DF3111",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 300,
+    borderRadius: 10,
+    padding: 5,
+    height: 40,
+  },
+  buttonGray: {
+    backgroundColor: "#E1E1E1",
+  },
   buttonLabel: {
     color: "#fff",
+  },
+  buttonText: {
+    color: "#000",
+    fontWeight: "bold",
   },
 
   imageContainer: {
@@ -301,5 +353,27 @@ const styles = StyleSheet.create({
     width: 400,
     height: 300,
     resizeMode: "cover",
+  },
+  addIcon: {
+    position: "absolute",
+    alignSelf: "center",
+    left: 40,
+    color: "#ACACAC",
+  },
+  tos: {
+    bottom: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    maxWidth: 300,
+    marginTop: 2,
+  },
+  linkText: {
+    color: "#229BDF",
+    textDecorationLine: "underline",
+    fontSize: 12,
+  },
+  text: {
+    fontSize: 12,
   },
 });
