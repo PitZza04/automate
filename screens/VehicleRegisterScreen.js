@@ -15,7 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import { addVehicle } from "../config/firestore";
 import { uploadImage } from "../config/storage";
 import { MaterialIcons } from "react-native-vector-icons";
-
+import useAuth from "../hooks/useAuth";
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
@@ -25,6 +25,10 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const [serialNo, setSerialNo] = useState("");
   const [yearModel, setYearModel] = useState("");
   const [openCamera, setOpenCamera] = useState(null);
+  const { dispatch } = useAuth();
+  const handleSkip = () => {
+    dispatch({ type: "SIGN_IN", payload: "hello my friend" });
+  };
   console.log(route.params);
   const handleOnSubmit = async () => {
     let fuelType = "";
@@ -207,7 +211,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity onPress={handleSkip}>
               <View style={styles.transparentBtn}>
                 <Text style={{ color: "#DF3111" }}>Skip For Now</Text>
               </View>

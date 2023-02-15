@@ -15,7 +15,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{user.email}</Text>
+      <Text>{user?.email || user}</Text>
       <Text>HomeScreen</Text>
       <TouchableOpacity onPress={handleLogout} style={{ marginBottom: 10 }}>
         <View style={styles.loginButton}>
