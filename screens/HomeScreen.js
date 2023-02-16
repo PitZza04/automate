@@ -1,16 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
 import { signOut, getAuth } from "@firebase/auth";
-
+import { useSelector, useDispatch } from "react-redux";
 import useAuth from "../hooks/useAuth";
+import { setSignOutUser } from "../redux/actions/userSlice";
 
 const HomeScreen = () => {
-  const { dispatch, user } = useAuth();
+  //const { dispatch, user } = useAuth();
   const auth = getAuth();
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const handleLogout = async () => {
     signOut(auth);
-    dispatch({ type: "SIGN_OUT" });
+    // dispatch({ type: "SIGN_OUT" });
+    //dispatch(setSignOutUser());
   };
 
   return (

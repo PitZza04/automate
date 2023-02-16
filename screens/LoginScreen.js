@@ -12,19 +12,22 @@ import {
 import React, { useState, useContext } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { auth } from "../config/firebase";
 import useAuth from "../hooks/useAuth";
+import { setSignInUser } from "../redux/actions/userSlice";
+import { useSelector } from "react-redux";
 const LoginScreen = ({ navigation }) => {
-  const { dispatch } = useAuth();
+  const user = useSelector((state) => state.user.user);
+  //const { dispatch } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
-  const auth = getAuth();
 
   const handleLogin = async () => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      dispatch({ type: "SIGN_IN", payload: result.user });
+      //dispatch(setSignInUser(result.user));
+      //console.log(result);
     } catch (error) {
       const errorMessage = error.message;
       console.log(errorMessage);
