@@ -1,19 +1,39 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import React, { useState, useEffect } from "react";
 import { signOut, getAuth } from "@firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
-import useAuth from "../hooks/useAuth";
-import { setSignOutUser } from "../redux/actions/userSlice";
-
+import { fetchUserVehicle } from "../config/firestore";
 const HomeScreen = () => {
-  //const { dispatch, user } = useAuth();
   const auth = getAuth();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const [userVehicleList, setUserVehicleList] = useState([]);
+  const userId = user.uid;
+  console.log(userId);
+  useEffect(() => {
+    const fetchUserVehicleLists = async () => {
+      setUserVehicleList(await fetchUserVehicle(userId));
+    };
+    fetchUserVehicleLists();
+  }, []);
+
+  const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
+    const { brandName } = vehicleDetail;
+    return (
+      <View>
+        <Text>{fuelType}</Text>
+        <Text>{brandName}</Text>
+
+        <Image
+          source={{ uri: img_url }}
+          style={{ resizeMode: "contain", height: 100, width: 100 }}
+        />
+      </View>
+    );
+  };
+
   const handleLogout = async () => {
     signOut(auth);
-    // dispatch({ type: "SIGN_OUT" });
-    //dispatch(setSignOutUser());
   };
 
   return (
@@ -25,6 +45,15 @@ const HomeScreen = () => {
           <Text style={styles.textLogin}>Logout</Text>
         </View>
       </TouchableOpacity>
+      {userVehicleList.map(({ id, fuelType, vehicleDetail, img_url }) => (
+        <RenderVehicle
+          key={id}
+          id={id}
+          fuelType={fuelType}
+          vehicleDetail={vehicleDetail}
+          img_url={img_url}
+        />
+      ))}
     </View>
   );
 };

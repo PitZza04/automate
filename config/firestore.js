@@ -4,6 +4,7 @@ import {
   onSnapshot,
   doc,
   setDoc,
+  where,
   query,
   orderBy,
   addDoc,
@@ -37,4 +38,44 @@ export const addVehicle = async (...props) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchUserVehicle = async (uid) => {
+  const vehicleRef = collection(db, "vehicle");
+  const userVehiclesRef = query(vehicleRef, where("uid", "==", uid));
+  const snapshot = await getDocs(userVehiclesRef);
+  const userVehicleList = [];
+  for (const documentSnapshot of snapshot.docs) {
+    const vehicle = documentSnapshot.data();
+    userVehicleList.push({
+      ...vehicle,
+      id: documentSnapshot.id,
+      img_url: await getDownloadURL(vehicle["img_url"]),
+    });
+  }
+  return userVehicleList;
+  // await getDocs(userVehiclesRef)
+  //   .then((querySnapshot) => {
+  //     querySnapshot.forEach(async (doc) => {
+  //       const vehicle = doc.data();
+  //       userVehicleList.push({
+  //         ...vehicle,
+  //         id: doc.id,
+  //         img_url: await getDownloadURL(vehicle["img_url"]),
+  //       });
+  //       //console.log(`${doc.id} => ${doc.data()}`);
+  //     });
+  //   })
+  //   .catch((error) => console.log(error.message));
+
+  // let userVehiclesList = [];
+  // const snapshot = await getDocs(userVehiclesRef);
+
+  // for (const documentSnapshot of snapshot.docs) {
+  //   const vehicle = documentSnapshot.data();
+  //   userVehiclesList.push({
+  //     ...vehicle,
+  //     id: documentSnapshot.id,
+  //   });
+  // }
 };

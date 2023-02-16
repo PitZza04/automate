@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
@@ -18,6 +19,7 @@ import { setSignInUser } from "../redux/actions/userSlice";
 import { useSelector } from "react-redux";
 const LoginScreen = ({ navigation }) => {
   const user = useSelector((state) => state.user.user);
+  const isLoading = useSelector((state) => state.user.isLoading);
   //const { dispatch } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +36,11 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <View style={styles.container}>
+      <ActivityIndicator></ActivityIndicator>
+    </View>
+  ) : (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logoWrapper}>
