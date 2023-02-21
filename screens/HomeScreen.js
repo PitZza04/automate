@@ -2,12 +2,17 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import { signOut, getAuth } from "@firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserVehicle } from "../config/firestore";
+import {
+  fetchUserVehicle,
+  createEmergencyInfo,
+  fetchEmergencyInfo,
+} from "../config/firestore";
 const HomeScreen = () => {
   const auth = getAuth();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const [userVehicleList, setUserVehicleList] = useState([]);
+  const [emergencyInfo, setEmergencyInfo] = useState([]);
   const userId = user.uid;
   console.log(userId);
   useEffect(() => {
@@ -15,6 +20,12 @@ const HomeScreen = () => {
       setUserVehicleList(await fetchUserVehicle(userId));
     };
     fetchUserVehicleLists();
+  }, []);
+  useEffect(() => {
+    const fetchEmergencyInfoList = async () => {
+      setEmergencyInfo(await fetchEmergencyInfo());
+    };
+    fetchEmergencyInfoList();
   }, []);
 
   const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
@@ -35,6 +46,9 @@ const HomeScreen = () => {
   const handleLogout = async () => {
     signOut(auth);
   };
+  const handlePress = async () => {
+    await createEmergencyInfo();
+  };
 
   return (
     <View style={styles.container}>
@@ -45,6 +59,11 @@ const HomeScreen = () => {
           <Text style={styles.textLogin}>Logout</Text>
         </View>
       </TouchableOpacity>
+      <TouchableOpacity onPress={handlePress} style={{ marginBottom: 10 }}>
+        <View style={styles.loginButton}>
+          <Text style={styles.textLogin}>Enter Data</Text>
+        </View>
+      </TouchableOpacity>
       {userVehicleList.map(({ id, fuelType, vehicleDetail, img_url }) => (
         <RenderVehicle
           key={id}
@@ -53,6 +72,12 @@ const HomeScreen = () => {
           vehicleDetail={vehicleDetail}
           img_url={img_url}
         />
+      ))}
+
+      {emergencyInfo?.map((item) => (
+        <View key={item.id}>
+          <Text>{item.message}</Text>
+        </View>
       ))}
     </View>
   );

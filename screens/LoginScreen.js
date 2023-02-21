@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import useAuth from "../hooks/useAuth";
 import { setSignInUser } from "../redux/actions/userSlice";
@@ -28,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
+      //console.log(result.uid);
       //dispatch(setSignInUser(result.user));
       //console.log(result);
     } catch (error) {
@@ -35,12 +36,16 @@ const LoginScreen = ({ navigation }) => {
       console.log(errorMessage);
     }
   };
+  const handleLogout = async () => {
+    signOut(auth);
+  };
 
-  return isLoading ? (
-    <View style={styles.container}>
-      <ActivityIndicator></ActivityIndicator>
-    </View>
-  ) : (
+  return (
+    //isLoading ?
+    //   <View style={styles.container}>
+    //     <ActivityIndicator></ActivityIndicator>
+    //   </View>
+    // ) : (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logoWrapper}>

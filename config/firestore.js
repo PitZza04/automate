@@ -39,6 +39,39 @@ export const addVehicle = async (...props) => {
     console.log(error);
   }
 };
+{
+  /* Creating Emergency Document */
+}
+
+export const createEmergencyInfo = async () => {
+  const dbRef = collection(db, "emergency_info");
+  const data = {
+    emergency_type: "accident",
+    phoneNumber: "09391302519",
+    message: "Need help, in front of bongbongs Alijis",
+    uid: "YJIMKxy3LUWcrLKtAgp1uTxOhR03",
+    vehicleInfo: "3ZfXXm5EDu10cqWWo5iW",
+  };
+  try {
+    await addDoc(dbRef, { ...data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const fetchEmergencyInfo = async () => {
+  const dbRef = collection(db, "emergency_info");
+  const snapshot = await getDocs(dbRef);
+  let emergencyInfo = [];
+
+  snapshot?.forEach((doc) => {
+    emergencyInfo.push({
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+
+  return emergencyInfo;
+};
 
 export const fetchUserVehicle = async (uid) => {
   const vehicleRef = collection(db, "vehicle");
