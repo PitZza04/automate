@@ -9,6 +9,8 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import VehicleRegisterScreen from "../screens/VehicleRegisterScreen";
 import BrandScreen from "../screens/BrandScreen";
 import ModelScreen from "../screens/ModelScreen";
+import MapScreen from "../screens/MapScreen";
+import HomeScreen from "../screens/HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -16,14 +18,14 @@ const Stack = createStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register">
+      <Stack.Navigator initialRouteName="Login">
         {/*  */}
         <Stack.Screen
           options={{
             headerShown: false,
           }}
           name="Login"
-          component={LoginScreen}
+          component={HomeScreen}
         />
         <Stack.Screen
           options={{

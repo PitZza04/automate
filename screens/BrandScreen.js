@@ -6,9 +6,19 @@ import { db } from "../config/firebase";
 import ListItem from "../components/ListItem";
 
 const BrandScreen = ({ navigation }) => {
+  // db.ref(
+  //   "value",
+  //   (snapshot) => {
+  //     console.log(snapshot.val());
+  //   },
+  //   (errorObject) => {
+  //     console.log("The read failed: " + errorObject.name);
+  //   }
+  // );
+
   const [listBrand, setListBrand] = useState([]);
+  const q = query(collection(db, "brand"), orderBy("make", "asc"));
   useEffect(() => {
-    const q = query(collection(db, "brand"), orderBy("make", "asc"));
     onSnapshot(q, (querySnapshot) => {
       setListBrand(
         querySnapshot.docs.map((doc) => ({
