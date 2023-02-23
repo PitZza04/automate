@@ -7,10 +7,14 @@ import {
   ScrollView,
   SafeAreaView,
   Dimensions,
+  Pressable,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { addVehicle } from "../config/firestore";
+import { uploadImage } from "../config/storage";
+import { MaterialIcons } from "react-native-vector-icons";
 
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
@@ -20,10 +24,13 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const [engineNo, setEngineNo] = useState("");
   const [serialNo, setSerialNo] = useState("");
   const [yearModel, setYearModel] = useState("");
-
+  const [openCamera, setOpenCamera] = useState(null);
   console.log(route.params);
   const handleOnSubmit = async () => {
     let fuelType = "";
+    const uid = "YJIMKxy3LUWcrLKtAgp1uTxOhR03";
+    const imageUri = openCamera;
+    //let fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
     isLiked.map(({ selected, name }) => {
       if (selected) {
         console.log(name);
@@ -31,7 +38,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
       }
     });
     await addVehicle({
-      uid: "YJIMKxy3LUWcrLKtAgp1uTxOhR03",
+      uid: uid,
       vehicleDetail: {
         modelId,
         brandId,
@@ -40,6 +47,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
         brandName,
         modelName,
       },
+      img_url: await uploadImage(imageUri, uid),
       yearModel,
       fuelType,
     });
@@ -57,7 +65,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
 
     if (!result.canceled) {
       setOpenCamera(result.assets[0].uri);
-      console.log(result.assets);
     }
   };
 
@@ -95,7 +102,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
             <TextInput
               style={styles.inputText}
               value={plateNo}
-              onChangeText={setPlateNo}
+              onChangeText={(prev) => setPlateNo(prev)}
               name="PlateNumber"
               returnKeyType="send"
               autoCorrect={false}
@@ -162,10 +169,10 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Brand")}
-              style={{ marginBottom: 5 }}
+              style={{}}
             >
-              <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>
+              <View style={[styles.buttonStyle, styles.buttonGray]}>
+                <Text style={styles.buttonText}>
                   Select Vehicle Brand and Model
                 </Text>
               </View>
@@ -173,44 +180,68 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={camera}
-              style={{ marginTop: 5, marginBottom: 5 }}
-            >
-              <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>
-                  Vehicle Registration photo Upload
+            <TouchableOpacity onPress={camera} style={{}}>
+              <View style={[styles.buttonStyle, styles.buttonGray]}>
+                <Text style={styles.buttonText}>
+                  Vehicle Registration Photo Upload
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
+          <View style={styles.optional}>
+            <Text style={{ color: "#D31111" }}>Optional:</Text>
+          </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={handleOnSubmit}
-              style={{ marginBottom: 5 }}
+              onPress={() => console.log("clicked add vehicle")}
+              style={{ marginBottom: 20 }}
             >
+              <View style={[styles.buttonStyle, styles.buttonGray, {}]}>
+                <MaterialIcons
+                  name="add-circle"
+                  size={27}
+                  style={styles.addIcon}
+                />
+                <Text style={styles.buttonText}>Add Another Vehicle</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+              <View style={styles.transparentBtn}>
+                <Text style={{ color: "#DF3111" }}>Skip For Now</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={handleOnSubmit}>
               <View style={styles.buttonStyle}>
                 <Text style={styles.buttonLabel}>Submit</Text>
               </View>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
-              style={{ marginBottom: 5 }}
-            >
-              <View style={styles.buttonStyle}>
-                <Text style={styles.buttonLabel}>Skip For Now</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.tos}>
+              <Text style={styles.text}>By continuing you agree to </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterNumber")}
+              >
+                <Text style={styles.linkText}>Terms and Service </Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>and </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterNumber")}
+              >
+                <Text style={styles.linkText}>Privacy Policy </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* <View style={styles.imageContainer}>
-              {openCamera !== "" && (
-                <Image source={{ uri: openCamera }} style={styles.image} />
-              )}
-            </View> */}
+            {openCamera !== "" && (
+              <Image source={{ uri: openCamera }} style={styles.image} />
+            )}
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -246,6 +277,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20,
   },
+  optional: {
+    marginTop: 30,
+    marginBottom: 2,
+    marginLeft: 20,
+  },
   radioButtonContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -276,18 +312,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonStyle: {
-    marginVertical: 10,
-    backgroundColor: "#DF3111",
+  transparentBtn: {
+    borderWidth: 1,
+    borderColor: "#DF3111",
+    marginVertical: 5,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: 325,
+    width: 300,
     borderRadius: 10,
     padding: 5,
     height: 40,
   },
+  buttonStyle: {
+    marginVertical: 5,
+    flexDirection: "row",
+    backgroundColor: "#DF3111",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 300,
+    borderRadius: 10,
+    padding: 5,
+    height: 40,
+  },
+  buttonGray: {
+    backgroundColor: "#E1E1E1",
+  },
   buttonLabel: {
     color: "#fff",
+  },
+  buttonText: {
+    color: "#000",
+    fontWeight: "bold",
   },
 
   imageContainer: {
@@ -297,5 +353,27 @@ const styles = StyleSheet.create({
     width: 400,
     height: 300,
     resizeMode: "cover",
+  },
+  addIcon: {
+    position: "absolute",
+    alignSelf: "center",
+    left: 40,
+    color: "#ACACAC",
+  },
+  tos: {
+    bottom: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    maxWidth: 300,
+    marginTop: 2,
+  },
+  linkText: {
+    color: "#229BDF",
+    textDecorationLine: "underline",
+    fontSize: 12,
+  },
+  text: {
+    fontSize: 12,
   },
 });
