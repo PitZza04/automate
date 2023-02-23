@@ -8,27 +8,28 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FontAwesome5 } from "react-native-vector-icons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-import useAuth from "../hooks/useAuth";
+import { getAuth, signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { authSignInWithEmailAndPassword } from "../redux/actions/authSlice";
+import { useSelector, useDispatch } from "react-redux";
 const LoginScreen = ({ navigation }) => {
-  const { dispatch } = useAuth();
+  const user = useSelector((state) => state.auth.user);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const error = useSelector((state) => state.auth.error);
+  //const { dispatch } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(true);
-  const auth = getAuth();
-
+  const dispatch = useDispatch();
   const handleLogin = async () => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      dispatch({ type: "SIGN_IN", payload: result.user });
-    } catch (error) {
-      const errorMessage = error.message;
-      console.log(errorMessage);
-    }
+    dispatch(authSignInWithEmailAndPassword({ email, password }));
+  };
+  const handleLogout = async () => {
+    signOut(auth);
   };
 
   return (
@@ -94,7 +95,6 @@ const LoginScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-
           <View style={styles.registerWrapper}>
             <Pressable
               style={{ marginTop: 10 }}
@@ -109,7 +109,9 @@ const LoginScreen = ({ navigation }) => {
               style={{ marginBottom: 10 }}
             >
               <View style={styles.loginButton}>
-                <Text style={styles.textLogin}>LOGIN</Text>
+                <Text style={styles.textLogin}>
+                  {isLoading ? "Loading..." : "LOGIN"}
+                </Text>
               </View>
             </TouchableOpacity>
             <View style={styles.registerLink}>

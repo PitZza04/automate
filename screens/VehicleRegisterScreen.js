@@ -16,6 +16,8 @@ import { addVehicle } from "../config/firestore";
 import { uploadImage } from "../config/storage";
 import { MaterialIcons } from "react-native-vector-icons";
 import useAuth from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { setSignInUser } from "../redux/actions/userSlice";
 const boxWidth = Dimensions.get("window").width / 4 - 17;
 
 const VehicleRegisterScreen = ({ route, navigation }) => {
@@ -25,9 +27,11 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
   const [serialNo, setSerialNo] = useState("");
   const [yearModel, setYearModel] = useState("");
   const [openCamera, setOpenCamera] = useState(null);
-  const { dispatch } = useAuth();
+  //const { dispatch } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const handleSkip = () => {
-    dispatch({ type: "SIGN_IN", payload: "hello my friend" });
+    dispatch(setSignInUser({ email: "ryan@mercurio.com", age: 23 }));
   };
   console.log(route.params);
   const handleOnSubmit = async () => {
@@ -194,6 +198,7 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.optional}>
             <Text style={{ color: "#D31111" }}>Optional:</Text>
+            <Text>{user ? user?.email || user : "no data"}</Text>
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity

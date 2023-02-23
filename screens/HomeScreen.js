@@ -1,18 +1,56 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import React, { useState, useEffect } from "react";
 import { signOut, getAuth } from "@firebase/auth";
-
-import useAuth from "../hooks/useAuth";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchUserVehicle,
+  createEmergencyInfo,
+  fetchEmergencyInfo,
+  updateEmergencyInfo,
+  deleteEmergencyInfo,
+} from "../config/firestore";
 const HomeScreen = () => {
-  const { dispatch, user } = useAuth();
   const auth = getAuth();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const [userVehicleList, setUserVehicleList] = useState([]);
+  const [emergencyInfo, setEmergencyInfo] = useState([]);
+  // useEffect(() => {
+  //   const fetchUserVehicleLists = async () => {
+  //     setUserVehicleList(await fetchUserVehicle(userId));
+  //   };
+  //   fetchUserVehicleLists();
+  // }, []);
+  useEffect(() => {
+    const fetchEmergencyInfoList = async () => {
+      setEmergencyInfo(await fetchEmergencyInfo());
+    };
+    fetchEmergencyInfoList();
+  }, []);
+
+  const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
+    const { brandName } = vehicleDetail;
+    return (
+      <View>
+        <Text>{fuelType}</Text>
+        <Text>{brandName}</Text>
+
+        <Image
+          source={{ uri: img_url }}
+          style={{ resizeMode: "contain", height: 100, width: 100 }}
+        />
+      </View>
+    );
+  };
 
   const handleLogout = async () => {
     signOut(auth);
-    dispatch({ type: "SIGN_OUT" });
   };
-
+  const handlePress = async () => {
+    await createEmergencyInfo();
+  };
+  const handlePressedItem = async (id) => await deleteEmergencyInfo(id);
+  // await updateEmergencyInfo(id, { message: "Need help ASAP" });
   return (
     <View style={styles.container}>
       <Text>{user?.email || user}</Text>
@@ -22,6 +60,31 @@ const HomeScreen = () => {
           <Text style={styles.textLogin}>Logout</Text>
         </View>
       </TouchableOpacity>
+      <TouchableOpacity onPress={handlePress} style={{ marginBottom: 10 }}>
+        <View style={styles.loginButton}>
+          <Text style={styles.textLogin}>Enter Data</Text>
+        </View>
+      </TouchableOpacity>
+      {userVehicleList.map(({ id, fuelType, vehicleDetail, img_url }) => (
+        <RenderVehicle
+          key={id}
+          id={id}
+          fuelType={fuelType}
+          vehicleDetail={vehicleDetail}
+          img_url={img_url}
+        />
+      ))}
+
+      {emergencyInfo?.map((item) => (
+        <View key={item.id}>
+          <TouchableOpacity
+            onPress={() => handlePressedItem(item.id)}
+            style={{ borderWidth: 1, borderColor: "green", padding: 10 }}
+          >
+            <Text>{item.message}</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
     </View>
   );
 };
