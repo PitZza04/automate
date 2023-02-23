@@ -1,13 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-//import auth from "@react-native-firebase/auth";
-import {
-  collection,
-  doc,
-  documentId,
-  getDocs,
-  onSnapshot,
-} from "firebase/firestore";
 import { auth } from "../../config/firebase";
 
 const initialState = {
@@ -15,16 +7,16 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-export const userAuthStateListener = createAsyncThunk(
-  "user/userAuthStateListener",
+export const listenOnAuthStateChanged = createAsyncThunk(
+  "user/listenOnAuthStateChanged",
   async (_, { dispatch }) => {
     try {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log("user is available");
+          console.log("auth  is available");
           dispatch(setSignInUser(user));
         } else {
-          console.log("Listening on no user");
+          console.log("Listening on auth but no user");
           dispatch(setSignOutUser());
         }
       });
@@ -33,8 +25,8 @@ export const userAuthStateListener = createAsyncThunk(
     }
   }
 );
-export const userSignInWithEmailAndPassword = createAsyncThunk(
-  "user/userSignInWithEmailAndPassword",
+export const authSignInWithEmailAndPassword = createAsyncThunk(
+  "user/authSignInWithEmailAndPassword",
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -44,8 +36,8 @@ export const userSignInWithEmailAndPassword = createAsyncThunk(
   }
 );
 
-const userSlice = createSlice({
-  name: "user",
+const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     setSignInUser: (state, action) => {
@@ -61,23 +53,23 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(userAuthStateListener.fulfilled, (state, action) => {
+    builder.addCase(listenOnAuthStateChanged.fulfilled, (state, action) => {
       state.isLoading = false;
     });
-    builder.addCase(userAuthStateListener.pending, (state, action) => {
+    builder.addCase(listenOnAuthStateChanged.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(
-      userSignInWithEmailAndPassword.fulfilled,
+      authSignInWithEmailAndPassword.fulfilled,
       (state, action) => {
         state.isLoading = false;
       }
     );
-    builder.addCase(userSignInWithEmailAndPassword.pending, (state, action) => {
+    builder.addCase(authSignInWithEmailAndPassword.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(
-      userSignInWithEmailAndPassword.rejected,
+      authSignInWithEmailAndPassword.rejected,
       (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
@@ -86,6 +78,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSignInUser, setSignOutUser, setLoading } = userSlice.actions;
+export const { setSignInUser, setSignOutUser, setLoading } = authSlice.actions;
 
-export default userSlice.reducer;
+export default authSlice.reducer;

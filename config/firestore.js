@@ -1,8 +1,10 @@
 import {
   collection,
   getDocs,
+  getDoc,
   onSnapshot,
   doc,
+  deleteDoc,
   setDoc,
   where,
   query,
@@ -69,8 +71,25 @@ export const fetchEmergencyInfo = async () => {
       ...doc.data(),
     });
   });
-
   return emergencyInfo;
+};
+
+export const updateEmergencyInfo = async (id, data) => {
+  try {
+    const dbRef = doc(db, "emergency_info", id);
+    await setDoc(dbRef, { ...data }, { merge: true });
+    //console.log(snapshot.data());
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+export const deleteEmergencyInfo = async (id) => {
+  try {
+    const dbRef = doc(db, "emergency_info", id);
+    await deleteDoc(dbRef);
+  } catch (error) {
+    console.log("error:", error);
+  }
 };
 
 export const fetchUserVehicle = async (uid) => {

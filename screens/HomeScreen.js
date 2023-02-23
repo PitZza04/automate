@@ -6,21 +6,21 @@ import {
   fetchUserVehicle,
   createEmergencyInfo,
   fetchEmergencyInfo,
+  updateEmergencyInfo,
+  deleteEmergencyInfo,
 } from "../config/firestore";
 const HomeScreen = () => {
   const auth = getAuth();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.auth.user);
   const [userVehicleList, setUserVehicleList] = useState([]);
   const [emergencyInfo, setEmergencyInfo] = useState([]);
-  const userId = user.uid;
-  console.log(userId);
-  useEffect(() => {
-    const fetchUserVehicleLists = async () => {
-      setUserVehicleList(await fetchUserVehicle(userId));
-    };
-    fetchUserVehicleLists();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserVehicleLists = async () => {
+  //     setUserVehicleList(await fetchUserVehicle(userId));
+  //   };
+  //   fetchUserVehicleLists();
+  // }, []);
   useEffect(() => {
     const fetchEmergencyInfoList = async () => {
       setEmergencyInfo(await fetchEmergencyInfo());
@@ -49,7 +49,8 @@ const HomeScreen = () => {
   const handlePress = async () => {
     await createEmergencyInfo();
   };
-
+  const handlePressedItem = async (id) => await deleteEmergencyInfo(id);
+  // await updateEmergencyInfo(id, { message: "Need help ASAP" });
   return (
     <View style={styles.container}>
       <Text>{user?.email || user}</Text>
@@ -76,7 +77,12 @@ const HomeScreen = () => {
 
       {emergencyInfo?.map((item) => (
         <View key={item.id}>
-          <Text>{item.message}</Text>
+          <TouchableOpacity
+            onPress={() => handlePressedItem(item.id)}
+            style={{ borderWidth: 1, borderColor: "green", padding: 10 }}
+          >
+            <Text>{item.message}</Text>
+          </TouchableOpacity>
         </View>
       ))}
     </View>
