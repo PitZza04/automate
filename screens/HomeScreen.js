@@ -1,4 +1,3 @@
-
 import {
   StyleSheet,
   Text,
@@ -8,8 +7,9 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { useContext, useState } from "react";
-import { signOut, getAuth } from "@firebase/auth";
+import React, { useContext, useState, useEffect } from "react";
+import { signOut } from "@firebase/auth";
+import { auth } from "../config/firebase";
 import {
   Entypo,
   FontAwesome5,
@@ -46,6 +46,9 @@ const HomeScreen = ({ navigation }) => {
   //   };
   //   fetchUserVehicleLists();
   // }, []);
+  const handleLogout = async () => {
+    signOut(auth);
+  };
   useEffect(() => {
     const fetchEmergencyInfoList = async () => {
       setEmergencyInfo(await fetchEmergencyInfo());
@@ -53,51 +56,16 @@ const HomeScreen = ({ navigation }) => {
     fetchEmergencyInfoList();
   }, []);
 
-  const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
-    const { brandName } = vehicleDetail;
-    
-     const handleLogout = async () => {
-    signOut(auth);
-  };
-  const handlePress = async () => {
-    await createEmergencyInfo();
-  };
-  const handlePressedItem = async (id) => await deleteEmergencyInfo(id);
-  // await updateEmergencyInfo(id, { message: "Need help ASAP" });
-  return (
-    <View style={styles.container}>
-      <Text>{user?.email || user}</Text>
-      <Text>HomeScreen</Text>
-      <TouchableOpacity onPress={handleLogout} style={{ marginBottom: 10 }}>
-        <View style={styles.loginButton}>
-          <Text style={styles.textLogin}>Logout</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handlePress} style={{ marginBottom: 10 }}>
-        <View style={styles.loginButton}>
-          <Text style={styles.textLogin}>Enter Data</Text>
-        </View>
-      </TouchableOpacity>
-      {userVehicleList.map(({ id, fuelType, vehicleDetail, img_url }) => (
-        <RenderVehicle
-          key={id}
-          id={id}
-          fuelType={fuelType}
-          vehicleDetail={vehicleDetail}
-          img_url={img_url}
-        />
-      ))}
-
-      {emergencyInfo?.map((item) => (
-        <View key={item.id}>
-          <TouchableOpacity
-            onPress={() => handlePressedItem(item.id)}
-            style={{ borderWidth: 1, borderColor: "green", padding: 10 }}
-          >
-            <Text>{item.message}</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+  // const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
+  //   const { brandName } = vehicleDetail;
+  //   const handleLogout = async () => {
+  //     signOut(auth);
+  //   };
+  //   const handlePress = async () => {
+  //     await createEmergencyInfo();
+  //   };
+  //   const handlePressedItem = async (id) => await deleteEmergencyInfo(id);
+  //   // await updateEmergencyInfo(id, { message: "Need help ASAP" });
   return (
     <View style={styles.container}>
       {/* <Text>{user.email}</Text> */}
@@ -570,6 +538,19 @@ const HomeScreen = ({ navigation }) => {
                   Vehicle Services
                 </Text>
               </View>
+              <TouchableOpacity
+                onPress={handleLogout}
+                style={{
+                  backgroundColor: "red",
+                  padding: 20,
+                  margin: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: 100,
+                }}
+              >
+                <Text>Logout</Text>
+              </TouchableOpacity>
 
               <View
                 style={{
@@ -750,10 +731,44 @@ const HomeScreen = ({ navigation }) => {
           <Text style={{ fontSize: 12 }}>Profile</Text>
         </View>
       </View>
-
     </View>
   );
 };
+
+// return (
+//   <View style={styles.container}>
+//     <Text>{user?.email || user}</Text>
+//     <Text>HomeScreen</Text>
+//     <TouchableOpacity onPress={handleLogout} style={{ marginBottom: 10 }}>
+//       <View style={styles.loginButton}>
+//         <Text style={styles.textLogin}>Logout</Text>
+//       </View>
+//     </TouchableOpacity>
+//     <TouchableOpacity onPress={handlePress} style={{ marginBottom: 10 }}>
+//       <View style={styles.loginButton}>
+//         <Text style={styles.textLogin}>Enter Data</Text>
+//       </View>
+//     </TouchableOpacity>
+//     {userVehicleList.map(({ id, fuelType, vehicleDetail, img_url }) => (
+//       <RenderVehicle
+//         key={id}
+//         id={id}
+//         fuelType={fuelType}
+//         vehicleDetail={vehicleDetail}
+//         img_url={img_url}
+//       />
+//     ))}
+
+//     {emergencyInfo?.map((item) => (
+//       <View key={item.id}>
+//         <TouchableOpacity
+//           onPress={() => handlePressedItem(item.id)}
+//           style={{ borderWidth: 1, borderColor: "green", padding: 10 }}
+//         >
+//           <Text>{item.message}</Text>
+//         </TouchableOpacity>
+//       </View>
+//     ))}
 
 export default HomeScreen;
 

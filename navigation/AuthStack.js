@@ -25,7 +25,7 @@ export default function AuthStack() {
             headerShown: false,
           }}
           name="Login"
-          component={HomeScreen}
+          component={LoginScreen}
         />
         <Stack.Screen
           options={{
