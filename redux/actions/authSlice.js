@@ -13,10 +13,8 @@ export const listenOnAuthStateChanged = createAsyncThunk(
     try {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log("auth  is available");
           dispatch(setSignInUser(user));
         } else {
-          console.log("Listening on auth but no user");
           dispatch(setSignOutUser());
         }
       });
