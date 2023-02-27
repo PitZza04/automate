@@ -4,7 +4,7 @@ import { fetchEmergencyInfo } from "../../config/firestore";
 
 export const useFetchEmergency = () => {
   return useQuery({
-    queryKey: ["services"],
+    queryKey: ["emergency"],
     queryFn: fetchEmergencyInfo,
   });
 };

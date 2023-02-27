@@ -61,6 +61,7 @@ export const createEmergencyInfo = async () => {
   }
 };
 export const fetchEmergencyInfo = async () => {
+  console.log("FetchEmergencyInfo called");
   const dbRef = collection(db, "emergency_info");
   const snapshot = await getDocs(dbRef);
   let emergencyInfo = [];

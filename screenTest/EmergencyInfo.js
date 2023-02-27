@@ -6,7 +6,6 @@ import { auth } from "../config/firebase";
 
 const EmergencyInfo = () => {
   const { data, isLoading, isError, error } = useFetchEmergency();
-  console.log(data);
   const handleLogout = () => {
     signOut(auth);
   };
