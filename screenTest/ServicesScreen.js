@@ -8,13 +8,13 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+
 import {
   useAddServices,
   useDeleteServices,
   useFetchServices,
   useUpdateServices,
-} from "../hooks/useFetchServices";
+} from "../hooks/services";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";

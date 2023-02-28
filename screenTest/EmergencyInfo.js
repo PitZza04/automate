@@ -4,7 +4,7 @@ import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-const EmergencyInfo = () => {
+const EmergencyInfo = ({ navigation }) => {
   const { data, isLoading, isError, error } = useFetchEmergency();
   const handleLogout = () => {
     signOut(auth);
@@ -25,6 +25,19 @@ const EmergencyInfo = () => {
         }}
       >
         <Text style={{ color: "#fff", fontSize: 20 }}>Logout</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("ScreenTest")}
+        style={{
+          margin: 10,
+          width: "50%",
+          padding: 20,
+          backgroundColor: "red",
+          alignItems: "center",
+          borderRadius: 20,
+        }}
+      >
+        <Text style={{ color: "#fff", fontSize: 20 }}>go to screen test</Text>
       </TouchableOpacity>
 
       <View style={styles.wrapper}>

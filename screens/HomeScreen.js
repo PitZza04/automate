@@ -16,7 +16,6 @@ import {
   MaterialCommunityIcons,
 } from "react-native-vector-icons";
 
-import useAuth from "../hooks/useAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -56,19 +55,8 @@ const HomeScreen = ({ navigation }) => {
     fetchEmergencyInfoList();
   }, []);
 
-  // const RenderVehicle = ({ id, fuelType, vehicleDetail, img_url }) => {
-  //   const { brandName } = vehicleDetail;
-  //   const handleLogout = async () => {
-  //     signOut(auth);
-  //   };
-  //   const handlePress = async () => {
-  //     await createEmergencyInfo();
-  //   };
-  //   const handlePressedItem = async (id) => await deleteEmergencyInfo(id);
-  //   // await updateEmergencyInfo(id, { message: "Need help ASAP" });
   return (
     <View style={styles.container}>
-      {/* <Text>{user.email}</Text> */}
       <View style={styles.header}>
         <TouchableOpacity
           style={{

@@ -5,7 +5,7 @@ import {
   addServices,
   deleteServices,
   updateServices,
-} from "../config/firetest";
+} from "../../config/firetest";
 
 export const useFetchServices = () => {
   return useQuery({

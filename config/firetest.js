@@ -38,3 +38,10 @@ export const updateServices = async (id, newData) => {
 
   return { id: id };
 };
+
+export const readAllModel = async () => {
+  const docRef = collection(db, "brand/model");
+  const subCollectionRef = await getDocs(docRef);
+  const subCollectionId = subCollectionRef?.docs?.map((doc) => doc.id);
+  return subCollectionId;
+};

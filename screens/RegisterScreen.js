@@ -12,7 +12,6 @@ import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
-import useAuth from "../hooks/useAuth";
 const RegisterScreen = ({ route, navigation }) => {
   const [openCamera, setOpenCamera] = useState(null);
   const [image, setImage] = useState(null);
