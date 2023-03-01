@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, StatusBar } from "react-native";
 import RootNavigation from "./navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import store from "./redux/reducers/store";
