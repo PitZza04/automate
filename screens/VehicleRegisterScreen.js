@@ -194,7 +194,6 @@ const VehicleRegisterScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.optional}>
             <Text style={{ color: "#D31111" }}>Optional:</Text>
-            <Text>{user ? user?.email || user : "no data"}</Text>
           </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
