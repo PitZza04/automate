@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "../screens/HomeScreen";
 import ServicesScreen from "../screenTest/ServicesScreen";
 import EmergencyInfo from "../screenTest/EmergencyInfo";
+import ScreenTest from "../screenTest/ScreenTest";
 const Stack = createStackNavigator();
 export default function UserStack() {
   return (
@@ -11,6 +12,7 @@ export default function UserStack() {
       <Stack.Navigator>
         <Stack.Screen name="Service" component={ServicesScreen} />
         <Stack.Screen name="Emergency" component={EmergencyInfo} />
+        <Stack.Screen name="ScreenTest" component={ScreenTest} />
         <Stack.Screen
           options={{
             headerShown: false,

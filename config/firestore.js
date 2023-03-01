@@ -17,6 +17,7 @@ import { getDownloadURL } from "./storage";
 const VEHICLE_COLLECTION = "vehicle";
 
 export const getModelList = async (brand_id) => {
+  console.log("getModelList is triggered");
   const modelsRef = query(
     collection(db, "brand", brand_id, "model"),
     orderBy("name", "asc")
@@ -28,7 +29,6 @@ export const getModelList = async (brand_id) => {
     allModels.push({
       ...model,
       id: documentSnapshot.id,
-      img_url: await getDownloadURL(model["img_url"]),
     });
   }
   return allModels;
@@ -61,6 +61,7 @@ export const createEmergencyInfo = async () => {
   }
 };
 export const fetchEmergencyInfo = async () => {
+  console.log("FetchEmergencyInfo called");
   const dbRef = collection(db, "emergency_info");
   const snapshot = await getDocs(dbRef);
   let emergencyInfo = [];
@@ -131,3 +132,23 @@ export const fetchUserVehicle = async (uid) => {
   //   });
   // }
 };
+
+//Update Image Url
+// const docRefToUpdate = doc(
+//   db,
+//   "brand",
+//   brand_id,
+//   "model",
+//   documentSnapshot.id
+// );
+// const img_url = documentSnapshot.data()["img_url"];
+// console.log(img_url);
+// await setDoc(
+//   docRefToUpdate,
+//   {
+//     ...documentSnapshot.data(),
+//     img_bucket: img_url,
+//     img_url: await getDownloadURL(img_url),
+//   },
+//   { merge: true }
+// );
